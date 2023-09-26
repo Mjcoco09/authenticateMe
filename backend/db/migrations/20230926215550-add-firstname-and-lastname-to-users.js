@@ -1,15 +1,20 @@
 "use strict";
+let options = {};
+options.tableName = 'Users'
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.addColumn("users", "firstName", {
+    await queryInterface.addColumn(options, "firstName", {
       type: Sequelize.STRING,
     });
-    await queryInterface.addColumn("users", "lastName", {
+    await queryInterface.addColumn(options, "lastName", {
       type: Sequelize.STRING,
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.removeColumn("users", "firstName");
-    await queryInterface.removeColumn("users", "lastName");
+    await queryInterface.removeColumn(options, "firstName");
+    await queryInterface.removeColumn(options, "lastName");
   },
 };
