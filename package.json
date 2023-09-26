@@ -15,7 +15,6 @@
     "start": "npm start --prefix backend",
     "build": "npm run --prefix backend build"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Mjcoco09/authenticateMe.git"
