@@ -29,6 +29,10 @@ module.exports = {
       stars: {
         type: Sequelize.INTEGER
       },
+      isSeederData: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

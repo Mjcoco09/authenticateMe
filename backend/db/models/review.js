@@ -18,6 +18,10 @@ module.exports = (sequelize, DataTypes) => {
   Review.init({
     spotId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
+    isSeederData: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     review: DataTypes.STRING,
     stars: DataTypes.INTEGER
   }, {

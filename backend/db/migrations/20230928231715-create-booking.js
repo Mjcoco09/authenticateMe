@@ -29,6 +29,10 @@ module.exports = {
       endDate: {
         type: Sequelize.DATE
       },
+      isSeederData: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

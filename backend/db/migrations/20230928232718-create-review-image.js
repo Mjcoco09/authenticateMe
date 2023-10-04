@@ -19,6 +19,10 @@ module.exports = {
       url: {
         type: Sequelize.STRING
       },
+      isSeederData: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
