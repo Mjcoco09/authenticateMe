@@ -55,8 +55,8 @@ router.get("/current", requireAuth, async (req, res) => {
       },
     ],
   };
-  const Reviews = await Review.findAll(filter);
-  return res.json({ Reviews });
+  const reviews = await Review.findAll(filter);
+  return res.json({ Reviews:reviews });
 });
 
 router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
@@ -147,7 +147,7 @@ router.delete("/:reviewId", requireAuth, async (req, res, next) => {
       reviewId: existingReview.id,
     },
   });
-  
+
   await existingReview.destroy();
 
   return res.json({ message: "Successfully deleted" });
