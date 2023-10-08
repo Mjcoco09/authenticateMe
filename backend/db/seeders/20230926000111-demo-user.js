@@ -89,21 +89,21 @@ module.exports = {
     // Booking seeding code
     await Booking.bulkCreate([
       {
-        SpotId: 1,
+        spotId: 1,
         userId: 1,
         startDate: "2022-11-01",
         endDate: "2022-11-30",
         isSeederData:true
       },
       {
-        SpotId: 2,
+        spotId: 2,
         userId: 2,
         isSeederData:true,
         startDate: "2022-04-01",
         endDate: "2022-05-30",
       },
       {
-        SpotId: 3,
+        spotId: 3,
         userId: 3,
         isSeederData:true,
         startDate: "2022-06-01",
