@@ -66,7 +66,7 @@ router.get("/", async (req, res, next) => {
     offset: (page - 1) * size,
   });
 
-  res.status(200).json({
+  res.json({
     Spots: spots.rows,
     page,
     size,
