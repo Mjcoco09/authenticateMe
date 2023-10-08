@@ -133,6 +133,40 @@ router.put("/:bookingId", requireAuth,async (req, res, next) => {
     });
   }
 );
+router.delete("/:bookingId", requireAuth, async (req, res, next) => {
+  const bookingId = req.params.bookingId;
+  const userId = req.user.id;
+
+  const booking = await Booking.findByPk(bookingId, {
+    include: Spot,
+  });
+
+  if (!booking) {
+    const err = new Error("Booking couldn't be found");
+    err.status = 404;
+    return next(err);
+  }
+
+  if (booking.userId !== userId && booking.Spot.ownerId !== userId) {
+    const err = new Error("You are not authorized to delete this booking");
+    err.status = 403;
+    return next(err);
+  }
+
+
+  if (new Date(booking.startDate) <= new Date()) {
+    const err = new Error("Bookings that have been started can't be deleted");
+    err.status = 403;
+    return next(err);
+  }
+
+  await booking.destroy();
+
+  res.json({
+    message: "Successfully deleted",
+  });
+});
+
 
 
 

@@ -14,6 +14,65 @@ const { check } = require("express-validator");
 const { Op } = require("sequelize");
 const router = express.Router();
 
+router.get("/", async (req, res, next) => {
+  const page = parseInt(req.query.page) || 1;
+  const size = parseInt(req.query.size) || 20;
+  const minLat = parseFloat(req.query.minLat);
+  const maxLat = parseFloat(req.query.maxLat);
+  const minLng = parseFloat(req.query.minLng);
+  const maxLng = parseFloat(req.query.maxLng);
+  const minPrice = parseFloat(req.query.minPrice) || 0;
+  const maxPrice = parseFloat(req.query.maxPrice) || 0;
+
+
+  if (page < 1 || size < 1 || minLat > maxLat || minLng > maxLng || minPrice > maxPrice) {
+    const errors = {
+      page: page < 1 ? "Page must be greater than or equal to 1" : undefined,
+      size: size < 1 ? "Size must be greater than or equal to 1" : undefined,
+      minLat: minLat > maxLat ? "Minimum latitude is invalid" : undefined,
+      maxLat: undefined,
+      minLng: minLng > maxLng ? "Minimum longitude is invalid" : undefined,
+      maxLng: undefined,
+      minPrice: minPrice > maxPrice ? "Minimum price must be greater than or equal to 0" : undefined,
+      maxPrice: undefined,
+    };
+
+    const err = new Error("Bad Request");
+    err.status = 400;
+    err.errors = errors;
+
+    return next(err);
+  }
+
+  const query = {
+    where: {},
+  };
+
+  if (minLat && maxLat) {
+    query.where.lat = { [Op.between]: [minLat, maxLat] };
+  }
+
+  if (minLng && maxLng) {
+    query.where.lng = { [Op.between]: [minLng, maxLng] };
+  }
+
+  if (minPrice && maxPrice) {
+    query.where.price = { [Op.between]: [minPrice, maxPrice] };
+  }
+
+  const spots = await Spot.findAndCountAll({
+    ...query,
+    limit: size,
+    offset: (page - 1) * size,
+  });
+
+  res.status(200).json({
+    Spots: spots.rows,
+    page,
+    size,
+  });
+});
+
 
 const validSpot = [
   check("address")
