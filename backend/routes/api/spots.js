@@ -1,21 +1,9 @@
 const express = require("express");
-const { Spot, SpotImage, Review, sequelize, User } = require("../../db/models");
+const { Spot, SpotImage, Review, sequelize, User,ReviewImage } = require("../../db/models");
 const { requireAuth } = require("../../utils/auth");
 const { handleValidationErrors } = require("../../utils/validation");
 const { check } = require("express-validator");
 const router = express.Router();
-const validSpotOwner = async (req, res, next) => {
-  const { user } = req;
-  const spotId = req.params.spotId;
-  const spot = await Spot.findByPk(spotId);
-  if (!spot) {
-    return res.status(404).json({ message: "Spot not found" });
-  }
-
-  if (spot.ownerId !== user.id) {
-    return res.status(403).json;
-  }
-};
 const validSpot = [
   check("address")
     .exists({ checkFalsy: true })
@@ -45,6 +33,16 @@ const validSpot = [
     .withMessage("Price per day is required"),
   handleValidationErrors,
 ];
+const validReview = [
+  check("review")
+  .exists({ checkFalsy: true })
+  .withMessage("Review text is required"),
+  check("stars")
+  .exists({ checkFalsy: true })
+  .isInt({ min: 1, max: 5 })
+  .withMessage("Stars must be an integer from 1 to 5"),
+  handleValidationErrors,
+]
 
 //get all spots
 router.get("/", async (req, res) => {
@@ -293,5 +291,77 @@ router.delete("/:spotId",requireAuth,async(req,res,next)=>{
   }
   await spot.destroy();
   return res.json({ message: "Successfully deleted" });
+})
+
+
+router.get("/:spotId/reviews",async(req,res,next)=>{
+  const spotId = Number(req.params.spotId);
+  const isSpot = await Spot.findByPk(spotId)
+  if(!isSpot){
+    const err = new Error
+    err.status = 404
+    err.message = "Spot couldn't be found"
+    return next(err)
+  }
+  const filter = {
+    where :{
+      spotId
+    },
+    include:[
+      {
+        model:User,
+        attributes:[
+          "id",
+          "firstName",
+          "lastName"
+        ]
+      },
+      {
+        model:ReviewImage,
+        attributes:[
+          "id",
+          "url"
+        ]
+      }
+    ]
+  }
+  const review = await Review.findAll(filter)
+
+  return res.json({ Reviews:review})
+
+})
+
+
+router.post("/:spotId/reviews",[requireAuth,validReview],async (req,res,next)=>{
+  const thisSpotId = Number(req.params.spotId);
+  const userId = req.user.id;
+  const {review,stars} = req.body
+  const spot = await Spot.findByPk(thisSpotId);
+  if(!spot){
+    const err = new Error
+    err.status = 404
+    err.message= "Spot couldn't be found"
+    return next(err)
+  }
+  const existingReview = await Review.findOne({
+    where: {
+      userId,
+      spotId:thisSpotId,
+    },
+  });
+
+  if (existingReview) {
+    const err = new Error
+    err.status = 500
+    err.message= "User already has a review for this spot"
+    return next(err)
+  }
+  const newReview = await Review.create({
+    thisSpotId,
+    userId,
+    review,
+    stars
+  })
+  return res.json(newReview)
 })
 module.exports = router;
