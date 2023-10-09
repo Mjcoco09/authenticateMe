@@ -347,7 +347,10 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
     return next(err);
   }
   if (spot.ownerId !== user.id) {
-    return res.json({ error: "forbidden" });
+    const err = new Error();
+    err.message = "Forbidden";
+    err.status = 403;
+    return next(err);
   }
   const image = await SpotImage.create({
     spotId: thisSpotId,
@@ -376,7 +379,10 @@ router.put("/:spotId", [requireAuth, validSpot], async (req, res, next) => {
     return next(err);
   }
   if (spot.ownerId !== req.user.id) {
-    return res.json({ error: "forbidden" });
+    const err = new Error();
+    err.message = "Forbidden";
+    err.status = 403;
+    return next(err);
   }
   if (!spot) {
     const err = new Error();
@@ -408,7 +414,10 @@ router.delete("/:spotId", requireAuth, async (req, res, next) => {
     return next(err);
   }
   if (spot.ownerId !== req.user.id) {
-    return res.json({ error: " forbidden" });
+    const err = new Error();
+    err.message = "Forbidden";
+    err.status = 403;
+    return next(err);
   }
   await spot.destroy();
   return res.json({ message: "Successfully deleted" });

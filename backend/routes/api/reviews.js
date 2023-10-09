@@ -100,6 +100,17 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
   const reviewId = Number(req.params.reviewId);
   const userId = req.user.id;
   const { url } = req.body;
+  const checkReview = await Review.findOne({
+    where: {
+      id: reviewId,
+    },
+
+  });
+  if(!checkReview){
+    const err = new Error("Review couldn't be found");
+    err.status = 404;
+    return next(err);
+  }
   const review = await Review.findOne({
     where: {
       id: reviewId,
@@ -109,7 +120,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
 
   if (!review) {
     const err = new Error("Forbidden");
-    err.status = 404;
+    err.status = 403;
     return next(err);
   }
 
@@ -163,7 +174,7 @@ router.put("/:reviewId", [requireAuth, validReview], async (req, res, next) => {
 
   if (!existingReview) {
     const err = new Error("Forbidden");
-    err.status = 404;
+    err.status = 403;
     return next(err);
   }
   existingReview.review = review;
@@ -196,7 +207,7 @@ router.delete("/:reviewId", requireAuth, async (req, res, next) => {
 
   if (!existingReview) {
     const err = new Error("Forbidden");
-    err.status = 404;
+    err.status = 403;
     return next (err)
   }
 
