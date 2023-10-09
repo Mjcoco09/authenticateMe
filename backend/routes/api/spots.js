@@ -131,12 +131,12 @@ router.get("/", async (req, res) => {
       "price",
       "createdAt",
       "updatedAt",
-      [
-        sequelize.literal(
-          `(SELECT "url" FROM "Image" AS "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
-        ),
-        "previewImage",
-      ],
+      // [
+      //   sequelize.literal(
+      //     `(SELECT "url" FROM "Images" AS "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
+      //   ),
+      //   "previewImage",
+      // ],
       // [
       //   sequelize.literal(
       //     `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")`
@@ -202,7 +202,19 @@ router.get("/current", requireAuth, async (req, res, next) => {
       },
     ],
   };
-  const spots = await Spot.findAll(filter);
+
+
+  // const spots = await Spot.findAll(filter);
+  // for (const spot of spots) {
+  //   const avgRating = await Review.findOne({
+  //     where: { spotId: spot.id },
+  //     attributes: [[sequelize.fn("avg", sequelize.col("stars")), "avgRating"]],
+  //     raw: true,
+  //   });
+
+  //   spot.dataValues.avgRating = avgRating?.avgRating || null;
+  // }
+
   return res.json({ Spots: spots });
 });
 
