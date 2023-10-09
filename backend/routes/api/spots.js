@@ -13,6 +13,88 @@ const { handleValidationErrors } = require("../../utils/validation");
 const { check } = require("express-validator");
 const { Op } = require("sequelize");
 const router = express.Router();
+router.get("/", async (req, res) => {
+  const filter = {
+    attributes: [
+      "id",
+      "ownerId",
+      "address",
+      "city",
+      "state",
+      "country",
+      "lat",
+      "lng",
+      "name",
+      "description",
+      "price",
+      "createdAt",
+      "updatedAt",
+    ],
+    include: [
+      {
+        model: SpotImage,
+        attributes: ["url"],
+        where: { preview: true },
+        required: false,
+      },
+      {
+        model: Review,
+        attributes: [],
+      },
+    ],
+  };
+
+  filter.include.push(
+    {
+      model: Review,
+      attributes: ["stars"],
+    },
+    {
+      model: SpotImage,
+      attributes: ["url"],
+      where: { preview: true },
+      required: false,
+    }
+  );
+  const spots = await Spot.findAll(filter);
+
+  for (const spot of spots) {
+    const avgRatingResult = await Review.findOne({
+      where: { spotId: spot.id },
+      attributes: [
+        [
+          sequelize.fn("avg", sequelize.col("stars")),
+          "avgRating",
+        ],
+      ],
+      raw: true,
+    });
+
+    spot.dataValues.avgRating = avgRatingResult
+      ? parseFloat(avgRatingResult.avgRating).toFixed(1)
+      : null;
+  }
+const spotsData = spots.map((spot) => ({
+    id: spot.id,
+    ownerId: spot.ownerId,
+    address: spot.address,
+    city: spot.city,
+    state: spot.state,
+    country: spot.country,
+    lat: spot.lat,
+    lng: spot.lng,
+    name: spot.name,
+    description: spot.description,
+    price: spot.price,
+    createdAt: spot.createdAt,
+    updatedAt: spot.updatedAt,
+    avgRating: spot.dataValues.avgRating || null,
+    previewImage: spot.images[0]?.url || null,
+  }));
+
+
+  return res.json({ Spots: spotsData });
+});
 
 router.get("/", async (req, res, next) => {
   const page = parseInt(req.query.page) || 1;
@@ -122,88 +204,7 @@ const validReview = [
 ];
 
 
-router.get("/", async (req, res) => {
-  const filter = {
-    attributes: [
-      "id",
-      "ownerId",
-      "address",
-      "city",
-      "state",
-      "country",
-      "lat",
-      "lng",
-      "name",
-      "description",
-      "price",
-      "createdAt",
-      "updatedAt",
-    ],
-    include: [
-      {
-        model: SpotImage,
-        attributes: ["url"],
-        where: { preview: true },
-        required: false,
-      },
-      {
-        model: Review,
-        attributes: [],
-      },
-    ],
-  };
 
-  filter.include.push(
-    {
-      model: Review,
-      attributes: ["stars"],
-    },
-    {
-      model: SpotImage,
-      attributes: ["url"],
-      where: { preview: true },
-      required: false,
-    }
-  );
-  const spots = await Spot.findAll(filter);
-
-  for (const spot of spots) {
-    const avgRatingResult = await Review.findOne({
-      where: { spotId: spot.id },
-      attributes: [
-        [
-          sequelize.fn("avg", sequelize.col("stars")),
-          "avgRating",
-        ],
-      ],
-      raw: true,
-    });
-
-    spot.dataValues.avgRating = avgRatingResult
-      ? parseFloat(avgRatingResult.avgRating).toFixed(1)
-      : null;
-  }
-const spotsData = spots.map((spot) => ({
-    id: spot.id,
-    ownerId: spot.ownerId,
-    address: spot.address,
-    city: spot.city,
-    state: spot.state,
-    country: spot.country,
-    lat: spot.lat,
-    lng: spot.lng,
-    name: spot.name,
-    description: spot.description,
-    price: spot.price,
-    createdAt: spot.createdAt,
-    updatedAt: spot.updatedAt,
-    avgRating: spot.dataValues.avgRating || null,
-    previewImage: spot.images[0]?.url || null,
-  }));
-
-
-  return res.json({ Spots: spotsData });
-});
 
 router.get("/current", requireAuth, async (req, res, next) => {
   const currentUserId = req.user.id;
