@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 const {
   User,
@@ -104,64 +104,61 @@ module.exports = {
         startDate: "2022-06-01",
         endDate: "2022-07-30",
       },
-    ]);
+    ]),
+      await Review.bulkCreate([
+        {
+          spotId: 1,
+          userId: 1,
 
-    await Review.bulkCreate([
-      {
-        spotId: 1,
-        userId: 1,
+          review: "not bad not bad",
+          stars: 4,
+        },
+        {
+          spotId: 2,
+          userId: 2,
 
-        review: "not bad not bad",
-        stars: 4,
-      },
-      {
-        spotId: 2,
-        userId: 2,
+          review: "noice very noice",
+          stars: 5,
+        },
+        {
+          spotId: 3,
+          userId: 3,
 
-        review: "noice very noice",
-        stars: 5,
-      },
-      {
-        spotId: 3,
-        userId: 3,
-
-        review: "meh it was okay",
-        stars: 1,
-      },
-    ]);
-
-    await ReviewImage.bulkCreate([
-      {
-        reviewId: 1,
-        url: "https://ibb.co/GkqpfS3",
-      },
-      {
-        reviewId: 2,
-        url: "https://ibb.co/GkqpfS4",
-      },
-      {
-        reviewId: 3,
-        url: "https://ibb.co/GkqpfS5",
-      },
-    ]);
-
-    await SpotImage.bulkCreate([
-      {
-        spotId: 1,
-        url: "https://ibb.co/GkqpfS6",
-        preview: true,
-      },
-      {
-        spotId: 2,
-        url: "https://ibb.co/GkqpfS7",
-        preview: true,
-      },
-      {
-        spotId: 3,
-        url: "https://ibb.co/GkqpfS8",
-        preview: true,
-      },
-    ]);
+          review: "meh it was okay",
+          stars: 1,
+        },
+      ]),
+      await ReviewImage.bulkCreate([
+        {
+          reviewId: 1,
+          url: "https://ibb.co/GkqpfS3",
+        },
+        {
+          reviewId: 2,
+          url: "https://ibb.co/GkqpfS4",
+        },
+        {
+          reviewId: 3,
+          url: "https://ibb.co/GkqpfS5",
+        },
+      ]),
+      await SpotImage.bulkCreate([
+        {
+          spotId: 1,
+          url: "https://ibb.co/GkqpfS6",
+          preview: true,
+        },
+        {
+          spotId: 2,
+          url: "https://ibb.co/GkqpfS7",
+          preview: true,
+        },
+        {
+          spotId: 3,
+          url: "https://ibb.co/GkqpfS8",
+          preview: true,
+        },
+      ]);
   },
 
   async down(queryInterface, Sequelize) {
