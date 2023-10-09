@@ -19,7 +19,7 @@ router.delete("/:imageId", requireAuth, async (req, res, next) => {
     }
 
     if (reviewImage.Review.userId !== userId) {
-      const err = new Error("You are not authorized to delete this review image");
+      const err = new Error("Forbidden");
       err.status = 403;
       return next(err);
     }

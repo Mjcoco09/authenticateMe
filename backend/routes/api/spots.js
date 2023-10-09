@@ -142,7 +142,7 @@ router.get("/", async (req, res) => {
           `(SELECT AVG("stars") FROM "Reviews" WHERE "Reviews"."spotId" = "Spot"."id")`
         ),
         "avgRating",
-      ],
+      ]
     ],
     include: [
       {
@@ -299,6 +299,7 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
     return res.json({ error: "You are not authorized to perform this action" });
   }
   const image = await SpotImage.create({
+    spotId: thisSpotId,
     url,
     preview,
   });
@@ -419,7 +420,7 @@ router.post(
       return next(err);
     }
     const newReview = await Review.create({
-      thisSpotId,
+      spotId: thisSpotId,
       userId,
       review,
       stars,
