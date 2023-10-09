@@ -17,10 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     spotId: DataTypes.INTEGER,
     url: DataTypes.STRING,
     preview: DataTypes.BOOLEAN,
-    isSeederData: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
+
   }, {
     sequelize,
     modelName: 'SpotImage',

@@ -28,10 +28,7 @@ module.exports = {
         type: Sequelize.STRING.BINARY,
         allowNull: false
       },
-      isSeederData: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
+  
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
