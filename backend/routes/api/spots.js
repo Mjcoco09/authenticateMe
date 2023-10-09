@@ -282,14 +282,16 @@ router.get("/:spotId", async (req, res, next) => {
     ],
   };
 
-  if (!thisSpotId) {
+
+
+  const spot = await Spot.findOne(filter);
+  
+  if (!spot) {
     const err = new Error("Spot couldn't be found");
     err.status = 404;
     return next(err);
   }
 
-
-  const spot = await Spot.findOne(filter);
 
   const numReviewsResult = await Review.count({
     where: { spotId: spot.id },
