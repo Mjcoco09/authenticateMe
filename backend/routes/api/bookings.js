@@ -25,7 +25,7 @@ router.get("/current",requireAuth,async(req,res)=>{
                     "price",
                     [
                         sequelize.literal(
-                          `(SELECT "url" FROM "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
+                          `(SELECT "url" FROM "SpotImage" WHERE "SpotImage"."spotId" = "Spot"."id" AND "SpotImage"."preview" = true LIMIT 1)`
                         ),
                         "previewImage",
                       ],
