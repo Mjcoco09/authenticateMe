@@ -121,38 +121,6 @@ const validReview = [
   handleValidationErrors,
 ];
 
-//get all spots
-router.get("/", async (req, res) => {
-  const filter = {
-    attributes: [
-      "id",
-      "ownerId",
-      "address",
-      "city",
-      "state",
-      "country",
-      "lat",
-      "lng",
-      "name",
-      "description",
-      "price",
-      "createdAt",
-      "updatedAt",
-    ],
-    include: [
-      {
-        model: SpotImage,
-        attributes: [],
-      },
-      {
-        model: Review,
-        attributes: [],
-      },
-    ],
-  };
-  const spots = await Spot.findAll(filter);
-  return res.json({ Spots: spots });
-});
 
 router.get("/", async (req, res) => {
   const filter = {
@@ -185,18 +153,6 @@ router.get("/", async (req, res) => {
     ],
   };
 
-  filter.include.push(
-    {
-      model: Review,
-      attributes: ["stars"],
-    },
-    {
-      model: SpotImage,
-      attributes: ["url"],
-      where: { preview: true },
-      required: false,
-    }
-  );
   const spots = await Spot.findAll(filter);
 
   for (const spot of spots) {
