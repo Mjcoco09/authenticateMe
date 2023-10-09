@@ -138,18 +138,6 @@ router.get("/", async (req, res) => {
       "price",
       "createdAt",
       "updatedAt",
-      // [
-      //   sequelize.literal(
-      //     `(SELECT "url" FROM "Images" AS "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
-      //   ),
-      //   "previewImage",
-      // ],
-      // [
-      //   sequelize.literal(
-      //     `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")`
-      //   ),
-      //   "avgRating",
-      // ]
     ],
     include: [
       {
@@ -196,7 +184,7 @@ router.get("/", async (req, res) => {
       },
     ],
   };
-  
+
   filter.include.push(
     {
       model: Review,
@@ -322,11 +310,11 @@ router.get("/current", requireAuth, async (req, res, next) => {
   return res.json({ Spots: spotsData });
 });
 router.get("/:spotId", async (req, res, next) => {
-  const thisSpot = Number(req.params.spotId);
+  const thisSpotId = Number(req.params.spotId);
 
   const filter = {
     where: {
-      id: thisSpot,
+      id: thisSpotId,
     },
     attributes: [
       "id",
@@ -342,18 +330,6 @@ router.get("/:spotId", async (req, res, next) => {
       "price",
       "createdAt",
       "updatedAt",
-      // [
-      //   sequelize.literal(
-      //     `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id") `
-      //   ),
-      //   "avgStarRating",
-      // ],
-      // [
-      //   sequelize.literal(
-      //     '(SELECT COUNT("id") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")'
-      //   ),
-      //   "numReviews",
-      // ],
     ],
     include: [
       {
@@ -371,12 +347,35 @@ router.get("/:spotId", async (req, res, next) => {
       },
     ],
   };
+
   const spot = await Spot.findOne(filter);
+
   if (!spot) {
     const err = new Error("Spot couldn't be found");
     err.status = 404;
     return next(err);
   }
+
+  const numReviewsResult = await Review.count({
+    where: { spotId: spot.id },
+  });
+
+  const avgRatingResult = await Review.findOne({
+    where: { spotId: spot.id },
+    attributes: [
+      [
+        sequelize.fn("avg", sequelize.col("stars")),
+        "avgStarRating",
+      ],
+    ],
+    raw: true,
+  });
+
+  spot.dataValues.numReviews = numReviewsResult;
+  spot.dataValues.avgStarRating = avgRatingResult
+    ? parseFloat(avgRatingResult.avgStarRating).toFixed(1)
+    : null;
+
   return res.json(spot);
 });
 

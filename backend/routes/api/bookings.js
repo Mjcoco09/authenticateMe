@@ -10,6 +10,13 @@ router.get("/current",requireAuth,async(req,res)=>{
     const filter =  {
         where: { userId: currentUserId },
         include: [
+          {
+            model: SpotImage,
+        as: "images",
+        attributes: ["url"],
+        where: { preview: true },
+        required: false,
+          },
             {
                 model:Spot,
                 attributes :[
@@ -23,21 +30,38 @@ router.get("/current",requireAuth,async(req,res)=>{
                     "lng",
                     "name",
                     "price",
-                    [
-                        sequelize.literal(
-                          `(SELECT "url" FROM "SpotImage" WHERE "SpotImage"."spotId" = "Spot"."id" AND "SpotImage"."preview" = true LIMIT 1)`
-                        ),
-                        "previewImage",
-                      ],
+
                 ]
             }
         ]
 }
 
 const bookings = await Booking.findAll(filter)
-return res.json({Bookings:bookings})
-})
+const formattedBookings = bookings.map((booking) => ({
+  id: booking.id,
+  spotId: booking.spotId,
+  Spot: {
+    id: booking.Spot.id,
+    ownerId: booking.Spot.ownerId,
+    address: booking.Spot.address,
+    city: booking.Spot.city,
+    state: booking.Spot.state,
+    country: booking.Spot.country,
+    lat: booking.Spot.lat,
+    lng: booking.Spot.lng,
+    name: booking.Spot.name,
+    price: booking.Spot.price,
+    previewImage: booking.Spot.images[0]?.url || null,
+  },
+  userId: booking.userId,
+  startDate: booking.startDate.toISOString().split("T")[0],
+  endDate: booking.endDate.toISOString().split("T")[0],
+  createdAt: booking.createdAt,
+  updatedAt: booking.updatedAt,
+}));
 
+return res.json({ Bookings: formattedBookings });
+});
 
 router.put("/:bookingId", requireAuth,async (req, res, next) => {
   const bookingId = req.params.bookingId;

@@ -25,7 +25,7 @@ const validReview = [
 
 router.get("/current", requireAuth, async (req, res) => {
   const currentUserId = req.user.id;
-  const filter = {
+  const reviews = await Review.findAll({
     where: { userId: currentUserId },
     include: [
       {
@@ -41,22 +41,59 @@ router.get("/current", requireAuth, async (req, res) => {
           "lng",
           "name",
           "price",
-          [
-            sequelize.literal(
-              `(SELECT "url" FROM "SpotImage" WHERE "SpotImage"."spotId" = "Spot"."id" AND "SpotImage"."preview" = true LIMIT 1)`
-            ),
-            "previewImage",
-          ],
+        ],
+        include: [
+          {
+            model: SpotImage,
+            as: "images",
+            attributes: ["url"],
+            where: { preview: true },
+            required: false,
+          },
         ],
       },
       {
         model: ReviewImage,
         attributes: ["id", "url"],
       },
+      {
+        model: User,
+        attributes: ["id", "firstName", "lastName"],
+        as: "User",
+      },
     ],
-  };
-  const reviews = await Review.findAll(filter);
-  return res.json({ Reviews:reviews });
+  });
+
+  const formattedReviews = reviews.map((review) => ({
+    id: review.id,
+    userId: review.userId,
+    spotId: review.spotId,
+    review: review.review,
+    stars: review.stars,
+    createdAt: review.createdAt,
+    updatedAt: review.updatedAt,
+    User: {
+      id: review.User.id,
+      firstName: review.User.firstName,
+      lastName: review.User.lastName,
+    },
+    Spot: {
+      id: review.Spot.id,
+      ownerId: review.Spot.ownerId,
+      address: review.Spot.address,
+      city: review.Spot.city,
+      state: review.Spot.state,
+      country: review.Spot.country,
+      lat: review.Spot.lat,
+      lng: review.Spot.lng,
+      name: review.Spot.name,
+      price: review.Spot.price,
+      previewImage: review.Spot.images[0]?.url || null,
+    },
+    ReviewImages: review.ReviewImages,
+  }));
+
+  return res.json({ Reviews: formattedReviews });
 });
 
 router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
