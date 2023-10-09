@@ -178,12 +178,12 @@ router.get("/current", requireAuth, async (req, res, next) => {
       "createdAt",
       "updatedAt",
 
-      [
-        sequelize.literal(
-          `(SELECT "url" FROM "Image" AS "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
-        ),
-        "previewImage",
-      ],
+      // [
+      //   sequelize.literal(
+      //     `(SELECT "url" FROM "Image" AS "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
+      //   ),
+      //   "previewImage",
+      // ],
       // [
       //   sequelize.literal(
       //     `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")`
