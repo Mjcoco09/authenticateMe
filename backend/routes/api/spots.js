@@ -153,6 +153,18 @@ router.get("/", async (req, res) => {
     ],
   };
 
+  filter.include.push(
+    {
+      model: Review,
+      attributes: ["stars"],
+    },
+    {
+      model: SpotImage,
+      attributes: ["url"],
+      where: { preview: true },
+      required: false,
+    }
+  );
   const spots = await Spot.findAll(filter);
 
   for (const spot of spots) {
