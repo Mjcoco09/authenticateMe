@@ -180,7 +180,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
 
       [
         sequelize.literal(
-          `(SELECT "url" FROM "Images" AS "SpotImage" WHERE "SpotImage"."spotId" = "Spot"."id" AND "SpotImage"."preview" = true LIMIT 1)`
+          `(SELECT "url" FROM "Images" AS "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
         ),
         "previewImage",
       ],
