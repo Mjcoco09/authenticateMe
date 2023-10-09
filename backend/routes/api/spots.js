@@ -33,6 +33,7 @@ router.get("/", async (req, res) => {
     include: [
       {
         model: SpotImage,
+        as:"SpotImages",
         attributes: ["url"],
         where: { preview: true },
         required: false,
@@ -51,6 +52,7 @@ router.get("/", async (req, res) => {
     },
     {
       model: SpotImage,
+      as:"SpotImages",
       attributes: ["url"],
       where: { preview: true },
       required: false,
