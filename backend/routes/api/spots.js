@@ -186,7 +186,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
     include: [
       {
         model: SpotImage,
-        attributes: [],
+        attributes: []
         // as: "images",
         // attributes: ["url"],
         // where: { preview: true },
@@ -200,7 +200,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
   };
 
 
-  // const spots = await Spot.findAll(filter);
+  const spots = await Spot.findAll(filter);
   // for (const spot of spots) {
   //   const avgRating = await Review.findOne({
   //     where: { spotId: spot.id },
