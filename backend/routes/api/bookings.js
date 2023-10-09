@@ -166,7 +166,6 @@ router.delete("/:bookingId", requireAuth, async (req, res, next) => {
   const booking = await Booking.findByPk(bookingId, {
     include: Spot,
   });
-
   if (!booking) {
     const err = new Error("Booking couldn't be found");
     err.status = 404;
@@ -178,6 +177,10 @@ router.delete("/:bookingId", requireAuth, async (req, res, next) => {
     err.status = 403;
     return next(err);
   }
+
+
+
+
 
 
   if (new Date(booking.startDate) <= new Date()) {

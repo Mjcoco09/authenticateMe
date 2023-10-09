@@ -193,23 +193,27 @@ router.delete("/:reviewId", requireAuth, async (req, res, next) => {
     }
   })
 
-  if (!exsist){
-    const err = new Error("Review couldn't be found");
-    err.status = 404;
-    return next(err);
-  }
+
   const existingReview = await Review.findOne({
     where: {
       id: reviewId,
       userId: userId,
     },
   });
+  
+  if (!exsist){
+    const err = new Error("Review couldn't be found");
+    err.status = 404;
+    return next(err);
+  }
+
 
   if (!existingReview) {
     const err = new Error("Forbidden");
     err.status = 403;
     return next (err)
   }
+
 
   await ReviewImage.destroy({
     where: {
