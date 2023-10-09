@@ -5,63 +5,64 @@ const { requireAuth } = require("../../utils/auth");
 const {Booking, Spot,SpotImage,  Review, sequelize,ReviewImage, User} = require("../../db/models");
 
 
-router.get("/current",requireAuth,async(req,res)=>{
-    const currentUserId = req.user.id;
-    const filter =  {
-        where: { userId: currentUserId },
+router.get("/current", requireAuth, async (req, res) => {
+  const currentUserId = req.user.id;
+
+  const bookings = await Booking.findAll({
+    where: { userId: currentUserId },
+    include: [
+      {
+        model: Spot,
+        attributes: [
+          "id",
+          "ownerId",
+          "address",
+          "city",
+          "state",
+          "country",
+          "lat",
+          "lng",
+          "name",
+          "price",
+        ],
         include: [
           {
             model: SpotImage,
-        as: "images",
-        attributes: ["url"],
-        where: { preview: true },
-        required: false,
+            attributes: ["url"],
+            where: { preview: true },
+            required: false,
           },
-            {
-                model:Spot,
-                attributes :[
-                    "id",
-                    "ownerId",
-                    "address",
-                    "city",
-                    "state",
-                    "country",
-                    "lat",
-                    "lng",
-                    "name",
-                    "price",
+        ],
+      },
+    ],
+  });
 
-                ]
-            }
-        ]
-}
+  const formattedBookings = bookings.map((booking) => ({
+    id: booking.id,
+    spotId: booking.Spot.id,
+    Spot: {
+      id: booking.Spot.id,
+      ownerId: booking.Spot.ownerId,
+      address: booking.Spot.address,
+      city: booking.Spot.city,
+      state: booking.Spot.state,
+      country: booking.Spot.country,
+      lat: booking.Spot.lat,
+      lng: booking.Spot.lng,
+      name: booking.Spot.name,
+      price: booking.Spot.price,
+      previewImage: booking.Spot.SpotImages[0]?.url || null,
+    },
+    userId: booking.userId,
+    startDate: booking.startDate.toISOString().split("T")[0],
+    endDate: booking.endDate.toISOString().split("T")[0],
+    createdAt: booking.createdAt,
+    updatedAt: booking.updatedAt,
+  }));
 
-const bookings = await Booking.findAll(filter)
-const formattedBookings = bookings.map((booking) => ({
-  id: booking.id,
-  spotId: booking.spotId,
-  Spot: {
-    id: booking.Spot.id,
-    ownerId: booking.Spot.ownerId,
-    address: booking.Spot.address,
-    city: booking.Spot.city,
-    state: booking.Spot.state,
-    country: booking.Spot.country,
-    lat: booking.Spot.lat,
-    lng: booking.Spot.lng,
-    name: booking.Spot.name,
-    price: booking.Spot.price,
-    previewImage: booking.Spot.images[0]?.url || null,
-  },
-  userId: booking.userId,
-  startDate: booking.startDate.toISOString().split("T")[0],
-  endDate: booking.endDate.toISOString().split("T")[0],
-  createdAt: booking.createdAt,
-  updatedAt: booking.updatedAt,
-}));
-
-return res.json({ Bookings: formattedBookings });
+  return res.json({ Bookings: formattedBookings });
 });
+
 
 router.put("/:bookingId", requireAuth,async (req, res, next) => {
   const bookingId = req.params.bookingId;
