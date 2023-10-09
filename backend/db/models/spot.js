@@ -27,10 +27,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
     price: DataTypes.DECIMAL,
-    isSeederData: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
+
   }, {
     sequelize,
     modelName: 'Spot',

@@ -47,10 +47,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      isSeederData: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
+     
     },
 
     {

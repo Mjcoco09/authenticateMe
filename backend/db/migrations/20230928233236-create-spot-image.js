@@ -22,10 +22,7 @@ module.exports = {
       preview: {
         type: Sequelize.BOOLEAN
       },
-      isSeederData: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
+
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
