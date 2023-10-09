@@ -29,7 +29,7 @@ module.exports = {
           model: 'Users',
           key: 'id',
         }
-        // , onDelete: 'cascade',
+        , onDelete: 'cascade',
       },
       startDate: {
         type: Sequelize.DATE
