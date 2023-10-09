@@ -1,4 +1,10 @@
 'use strict';
+
+let options = {};
+if (process.env.NODE_ENV === 'production') {
+  options.schema = process.env.SCHEMA;
+}
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -11,15 +17,14 @@ module.exports = {
       },
       reviewId: {
         type: Sequelize.INTEGER,
-        references:{
-          model:'Reviews',
-          key:'id'
+        references: {
+          model: 'Reviews',
+          key: 'id',
         }
       },
       url: {
         type: Sequelize.STRING
       },
-
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -30,7 +35,7 @@ module.exports = {
         type: Sequelize.DATE,
         defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
       }
-    });
+    }, options); // Pass the options object here
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('ReviewImages');
