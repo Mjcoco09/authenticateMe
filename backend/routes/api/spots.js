@@ -133,16 +133,16 @@ router.get("/", async (req, res) => {
       "updatedAt",
       [
         sequelize.literal(
-          `(SELECT "url" FROM "SpotImage" WHERE "SpotImage"."spotId" = "Spot"."id" AND "SpotImage"."preview" = true LIMIT 1)`
+          `(SELECT "url" FROM "Image" AS "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
         ),
         "previewImage",
       ],
-      [
-        sequelize.literal(
-          `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")`
-        ),
-        "avgRating",
-      ]
+      // [
+      //   sequelize.literal(
+      //     `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")`
+      //   ),
+      //   "avgRating",
+      // ]
     ],
     include: [
       {
@@ -177,23 +177,27 @@ router.get("/current", requireAuth, async (req, res, next) => {
       "price",
       "createdAt",
       "updatedAt",
+
       [
         sequelize.literal(
-          `(SELECT "url" FROM "SpotImage" WHERE "SpotImage"."spotId" = "Spot"."id" AND "SpotImage"."preview" = true LIMIT 1)`
+          `(SELECT "url" FROM "Image" AS "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
         ),
         "previewImage",
       ],
-      [
-        sequelize.literal(
-          `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")`
-        ),
-        "avgRating",
-      ],
+      // [
+      //   sequelize.literal(
+      //     `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")`
+      //   ),
+      //   "avgRating",
+      // ],
     ],
     include: [
       {
         model: SpotImage,
-        attributes: [],
+        as: "images",
+        attributes: ["url"],
+        where: { preview: true },
+        required: false,
       },
       {
         model: Review,
@@ -226,18 +230,18 @@ router.get("/:spotId", async (req, res, next) => {
       "price",
       "createdAt",
       "updatedAt",
-      [
-        sequelize.literal(
-          `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id") `
-        ),
-        "avgStarRating",
-      ],
-      [
-        sequelize.literal(
-          '(SELECT COUNT("id") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")'
-        ),
-        "numReviews",
-      ],
+      // [
+      //   sequelize.literal(
+      //     `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id") `
+      //   ),
+      //   "avgStarRating",
+      // ],
+      // [
+      //   sequelize.literal(
+      //     '(SELECT COUNT("id") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")'
+      //   ),
+      //   "numReviews",
+      // ],
     ],
     include: [
       {
