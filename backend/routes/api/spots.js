@@ -187,6 +187,8 @@ router.get("/", async (req, res) => {
       {
         model: SpotImage,
         attributes: ["url"],
+        where: { preview: true },
+        required: false,
       },
       {
         model: Review,
@@ -195,7 +197,24 @@ router.get("/", async (req, res) => {
     ],
   };
   const spots = await Spot.findAll(filter);
-  const spotsData = spots.map((spot) => ({
+
+  for (const spot of spots) {
+    const avgRatingResult = await Review.findOne({
+      where: { spotId: spot.id },
+      attributes: [
+        [
+          sequelize.fn("avg", sequelize.col("stars")),
+          "avgRating",
+        ],
+      ],
+      raw: true,
+    });
+
+    spot.dataValues.avgRating = avgRatingResult
+      ? parseFloat(avgRatingResult.avgRating).toFixed(1)
+      : null;
+  }
+const spotsData = spots.map((spot) => ({
     id: spot.id,
     ownerId: spot.ownerId,
     address: spot.address,
@@ -209,9 +228,10 @@ router.get("/", async (req, res) => {
     price: spot.price,
     createdAt: spot.createdAt,
     updatedAt: spot.updatedAt,
-    avgRating: null, // You can calculate this separately
-    previewImage: spot.SpotImages[0]?.url || null,
+    avgRating: spot.dataValues.avgRating || null,
+    previewImage: spot.images[0]?.url || null,
   }));
+
 
   return res.json({ Spots: spotsData });
 });
@@ -251,6 +271,23 @@ router.get("/current", requireAuth, async (req, res, next) => {
   };
 
   const spots = await Spot.findAll(filter);
+  for (const spot of spots) {
+    const avgRatingResult = await Review.findOne({
+      where: { spotId: spot.id },
+      attributes: [
+        [
+          sequelize.fn("avg", sequelize.col("stars")),
+          "avgRating",
+        ],
+      ],
+      raw: true,
+    });
+
+    spot.dataValues.avgRating = avgRatingResult
+      ? parseFloat(avgRatingResult.avgRating).toFixed(1)
+      : null;
+  }
+
   const spotsData = spots.map((spot) => ({
     id: spot.id,
     ownerId: spot.ownerId,
@@ -265,7 +302,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
     price: spot.price,
     createdAt: spot.createdAt,
     updatedAt: spot.updatedAt,
-    avgRating: null, 
+    avgRating: spot.dataValues.avgRating || null,
     previewImage: spot.images[0]?.url || null,
   }));
 
