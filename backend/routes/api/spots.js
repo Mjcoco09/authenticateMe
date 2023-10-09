@@ -334,7 +334,7 @@ router.get("/:spotId", async (req, res, next) => {
     include: [
       {
         model: SpotImage,
-        as: "images",
+        as: "SpotImages",
         attributes: ["id", "url", "preview"],
       },
       {
@@ -377,29 +377,9 @@ router.get("/:spotId", async (req, res, next) => {
     ? parseFloat(avgRatingResult.avgStarRating).toFixed(1)
     : null;
 
-
-  const formattedSpot = {
-    id: spot.id,
-    ownerId: spot.ownerId,
-    address: spot.address,
-    city: spot.city,
-    state: spot.state,
-    country: spot.country,
-    lat: spot.lat,
-    lng: spot.lng,
-    name: spot.name,
-    description: spot.description,
-    price: spot.price,
-    createdAt: spot.createdAt,
-    updatedAt: spot.updatedAt,
-    numReviews: spot.dataValues.numReviews || null,
-    avgStarRating: spot.dataValues.avgStarRating || null,
-    SpotImages: spot.SpotImages || null,
-    Owner: spot.Owner || null,
-  };
-
-  return res.json(formattedSpot);
+  return res.json(spot);
 });
+
 
 
 router.post("/", [requireAuth, validSpot], async (req, res) => {
