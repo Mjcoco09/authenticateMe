@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     spotId: DataTypes.INTEGER,
     userId: DataTypes.INTEGER,
     isSeederData: {
-      type: DataTypes.BOOLEAN, 
+      type: DataTypes.BOOLEAN,
       defaultValue: false,
     },
     startDate: DataTypes.DATE,
@@ -26,6 +26,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Booking',
+    scopes:{
+      defaultScope:{
+        attributes:{
+          exclude:["isSeederData"]
+        }
+      }
+    }
   });
   return Booking;
 };

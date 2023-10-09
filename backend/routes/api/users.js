@@ -34,7 +34,6 @@ const validateSignup = [
 router.post("/", validateSignup, async (req, res, next) => {
   const { email, password, username, firstName, lastName } = req.body;
   const hashedPassword = bcrypt.hashSync(password);
-  //!create custom error to see if user already exsists or not 1:37/..
   const err= new Error
   const existingUser = await User.findOne({
     where:{
