@@ -342,7 +342,6 @@ router.get("/:spotId", async (req, res, next) => {
       },
       {
         model: User,
-        as: "Owner",
         attributes: ["id", "firstName", "lastName"],
       },
     ],
@@ -371,10 +370,22 @@ router.get("/:spotId", async (req, res, next) => {
     raw: true,
   });
 
+  const spotImages = await SpotImage.findAll({
+    where: { spotId: spot.id },
+    attributes: ["id", "url", "preview"],
+  });
+
+  const owner = await User.findOne({
+    where: { id: spot.ownerId },
+    attributes: ["id", "firstName", "lastName"],
+  });
+
   spot.dataValues.numReviews = numReviewsResult;
   spot.dataValues.avgStarRating = avgRatingResult
     ? parseFloat(avgRatingResult.avgStarRating).toFixed(1)
     : null;
+  spot.dataValues.SpotImages = spotImages;
+  spot.dataValues.Owner = owner;
 
   return res.json(spot);
 });
