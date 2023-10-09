@@ -71,7 +71,7 @@ router.post("/:reviewId/images", requireAuth, async (req, res, next) => {
   });
 
   if (!review) {
-    const err = new Error("Review couldn't be found");
+    const err = new Error("Forbidden");
     err.status = 404;
     return next(err);
   }
@@ -106,7 +106,17 @@ router.put("/:reviewId", [requireAuth, validReview], async (req, res, next) => {
   const { review, stars } = req.body;
   const reviewId = req.params.reviewId;
   const userId = req.user.id;
+  const exsist = await Review.findOne({
+    where: {
+      id: reviewId
+    }
+  })
 
+  if (!exsist){
+    const err = new Error("Review couldn't be found");
+    err.status = 404;
+    return next(err);
+  }
   const existingReview = await Review.findOne({
     where: {
       id: reviewId,
@@ -115,7 +125,7 @@ router.put("/:reviewId", [requireAuth, validReview], async (req, res, next) => {
   });
 
   if (!existingReview) {
-    const err = new Error("Review couldn't be found");
+    const err = new Error("Forbidden");
     err.status = 404;
     return next(err);
   }
@@ -129,6 +139,17 @@ router.put("/:reviewId", [requireAuth, validReview], async (req, res, next) => {
 router.delete("/:reviewId", requireAuth, async (req, res, next) => {
   const reviewId = Number(req.params.reviewId);
   const userId = req.user.id;
+  const exsist = await Review.findOne({
+    where: {
+      id: reviewId
+    }
+  })
+
+  if (!exsist){
+    const err = new Error("Review couldn't be found");
+    err.status = 404;
+    return next(err);
+  }
   const existingReview = await Review.findOne({
     where: {
       id: reviewId,
@@ -137,7 +158,7 @@ router.delete("/:reviewId", requireAuth, async (req, res, next) => {
   });
 
   if (!existingReview) {
-    const err = new Error("Review couldn't be found");
+    const err = new Error("Forbidden");
     err.status = 404;
     return next (err)
   }

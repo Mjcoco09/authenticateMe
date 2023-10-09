@@ -83,7 +83,6 @@ module.exports = {
       },
     ]);
 
-    // Booking seeding code
     await Booking.bulkCreate([
       {
         spotId: 1,
