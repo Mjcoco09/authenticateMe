@@ -109,11 +109,11 @@ router.get("/", async (req, res, next) => {
     city: spot.city,
     state: spot.state,
     country: spot.country,
-    lat:spot.lat,
-    lng: spot.lng,
+    lat:parseFloat(spot.lat),
+    lng: parseFloat(spot.lng),
     name: spot.name,
     description: spot.description,
-    price: spot.price,
+    price: parseFloat(spot.price),
     createdAt: spot.createdAt,
     updatedAt: spot.updatedAt,
     avgRating: spot.dataValues.avgRating || null,
@@ -229,11 +229,11 @@ router.get("/current", requireAuth, async (req, res, next) => {
     city: spot.city,
     state: spot.state,
     country: spot.country,
-    lat: spot.lat,
-    lng: spot.lng,
+    lat: parseFloat(spot.lat),
+    lng: parseFloat(spot.lng),
     name: spot.name,
     description: spot.description,
-    price: spot.price,
+    price: parseFloat(spot.price),
     createdAt: spot.createdAt,
     updatedAt: spot.updatedAt,
     avgRating: spot.dataValues.avgRating || null,
@@ -535,7 +535,7 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
   }
 
   if (existingSpot.ownerId === userId) {
-    const err = new Error("You cannot book your own spot");
+    const err = new Error("Forbidden");
     err.status = 403;
     return next(err);
   }
