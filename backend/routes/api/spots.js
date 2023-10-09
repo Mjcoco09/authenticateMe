@@ -24,8 +24,13 @@ router.get("/", async (req, res, next) => {
   const minPrice = parseFloat(req.query.minPrice) || 0;
   const maxPrice = parseFloat(req.query.maxPrice) || 0;
 
-
-  if (page < 1 || size < 1 || minLat > maxLat || minLng > maxLng || minPrice > maxPrice) {
+  if (
+    page < 1 ||
+    size < 1 ||
+    minLat > maxLat ||
+    minLng > maxLng ||
+    minPrice > maxPrice
+  ) {
     const errors = {
       page: page < 1 ? "Page must be greater than or equal to 1" : undefined,
       size: size < 1 ? "Size must be greater than or equal to 1" : undefined,
@@ -33,7 +38,10 @@ router.get("/", async (req, res, next) => {
       maxLat: undefined,
       minLng: minLng > maxLng ? "Minimum longitude is invalid" : undefined,
       maxLng: undefined,
-      minPrice: minPrice > maxPrice ? "Minimum price must be greater than or equal to 0" : undefined,
+      minPrice:
+        minPrice > maxPrice
+          ? "Minimum price must be greater than or equal to 0"
+          : undefined,
       maxPrice: undefined,
     };
 
@@ -72,7 +80,6 @@ router.get("/", async (req, res, next) => {
     size,
   });
 });
-
 
 const validSpot = [
   check("address")
@@ -159,6 +166,56 @@ router.get("/", async (req, res) => {
   return res.json({ Spots: spots });
 });
 
+router.get("/", async (req, res) => {
+  const filter = {
+    attributes: [
+      "id",
+      "ownerId",
+      "address",
+      "city",
+      "state",
+      "country",
+      "lat",
+      "lng",
+      "name",
+      "description",
+      "price",
+      "createdAt",
+      "updatedAt",
+    ],
+    include: [
+      {
+        model: SpotImage,
+        attributes: ["url"],
+      },
+      {
+        model: Review,
+        attributes: [],
+      },
+    ],
+  };
+  const spots = await Spot.findAll(filter);
+  const spotsData = spots.map((spot) => ({
+    id: spot.id,
+    ownerId: spot.ownerId,
+    address: spot.address,
+    city: spot.city,
+    state: spot.state,
+    country: spot.country,
+    lat: spot.lat,
+    lng: spot.lng,
+    name: spot.name,
+    description: spot.description,
+    price: spot.price,
+    createdAt: spot.createdAt,
+    updatedAt: spot.updatedAt,
+    avgRating: null, // You can calculate this separately
+    previewImage: spot.SpotImages[0]?.url || null,
+  }));
+
+  return res.json({ Spots: spotsData });
+});
+
 router.get("/current", requireAuth, async (req, res, next) => {
   const currentUserId = req.user.id;
   const filter = {
@@ -177,27 +234,14 @@ router.get("/current", requireAuth, async (req, res, next) => {
       "price",
       "createdAt",
       "updatedAt",
-
-      // [
-      //   sequelize.literal(
-      //     `(SELECT "url" FROM "Images" AS "SpotImages" WHERE "SpotImages"."spotId" = "Spot"."id" AND "SpotImages"."preview" = true LIMIT 1)`
-      //   ),
-      //   "previewImage",
-      // ],
-      // [
-      //   sequelize.literal(
-      //     `(SELECT AVG("stars") FROM "Review" WHERE "Review"."spotId" = "Spot"."id")`
-      //   ),
-      //   "avgRating",
-      // ],
     ],
     include: [
       {
         model: SpotImage,
-        as: 'images',
-            attributes: ["url"],
-            where: { preview: true },
-            required: false,
+        as: "images",
+        attributes: ["url"],
+        where: { preview: true },
+        required: false,
       },
       {
         model: Review,
@@ -206,40 +250,27 @@ router.get("/current", requireAuth, async (req, res, next) => {
     ],
   };
 
-
   const spots = await Spot.findAll(filter);
-  for (const spot of spots) {
-    const avgRating = await Review.findOne({
-      where: { spotId: spot.id },
-      attributes: [[sequelize.fn("avg", sequelize.col("stars")), "avgRating"]],
-      raw: true,
-    });
+  const spotsData = spots.map((spot) => ({
+    id: spot.id,
+    ownerId: spot.ownerId,
+    address: spot.address,
+    city: spot.city,
+    state: spot.state,
+    country: spot.country,
+    lat: spot.lat,
+    lng: spot.lng,
+    name: spot.name,
+    description: spot.description,
+    price: spot.price,
+    createdAt: spot.createdAt,
+    updatedAt: spot.updatedAt,
+    avgRating: null, 
+    previewImage: spot.images[0]?.url || null,
+  }));
 
-    spot.dataValues.avgRating = avgRating?.avgRating || null;
-  }
-
-  return res.json({
-    Spots: [
-      {
-        id: spot.id,
-        ownerId: spot.ownerId,
-        address: spot.address,
-        city: spot.city,
-        state: spot.state,
-        country: spot.country,
-        lat: spot.lat,
-        lng: spot.lng,
-        name: spot.name,
-        description: spot.description,
-        price: spot.price,
-        createdAt: spot.createdAt,
-        updatedAt: spot.updatedAt,
-        avgRating: avgRating,
-        previewImage: spot.SpotImages[0]?.url || null,
-      },
-    ],
+  return res.json({ Spots: spotsData });
 });
-},
 router.get("/:spotId", async (req, res, next) => {
   const thisSpot = Number(req.params.spotId);
 
@@ -304,7 +335,6 @@ router.post("/", [requireAuth, validSpot], async (req, res) => {
     req.body;
   const ownerId = req.user.id;
   const spot = await Spot.create({
-
     address,
     city,
     state,
@@ -506,100 +536,97 @@ router.get("/:spotId/bookings", requireAuth, async (req, res, next) => {
   return res.json({ Bookings: bookings });
 });
 
+router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
+  const spotId = Number(req.params.spotId);
+  const userId = req.user.id;
+  const { startDate, endDate } = req.body;
 
-router.post("/:spotId/bookings", requireAuth,async (req, res, next) => {
-    const spotId = Number(req.params.spotId);
-    const userId = req.user.id;
-    const { startDate, endDate } = req.body;
+  const existingSpot = await Spot.findByPk(spotId);
 
-    const existingSpot = await Spot.findByPk(spotId);
+  if (!existingSpot) {
+    const err = new Error("Spot couldn't be found");
+    err.status = 404;
+    return next(err);
+  }
 
-    if (!existingSpot) {
-      const err = new Error("Spot couldn't be found");
-      err.status = 404;
-      return next(err);
-    }
+  if (existingSpot.ownerId === userId) {
+    const err = new Error("You cannot book your own spot");
+    err.status = 403;
+    return next(err);
+  }
 
-    if (existingSpot.ownerId === userId) {
-      const err = new Error("You cannot book your own spot");
-      err.status = 403;
-      return next(err);
-    }
-
-    const existingBookings = await Booking.findAll({
-      where: {
-        spotId: existingSpot.id,
-      },
-    });
-
-    const newBooking = {
+  const existingBookings = await Booking.findAll({
+    where: {
       spotId: existingSpot.id,
-      userId,
-      startDate,
-      endDate,
-    };
+    },
+  });
 
-    for (const booking of existingBookings) {
-      if (
-        new Date(newBooking.startDate) >= new Date(booking.startDate) &&
-        new Date(newBooking.startDate) <= new Date(booking.endDate)
-      ) {
-        const err = new Error(
-          "Sorry, this spot is already booked for the specified dates"
-        );
-        err.status = 403;
-        err.errors = {
-          startDate: "Start date conflicts with an existing booking",
-        };
-        return next(err);
-      }
+  const newBooking = {
+    spotId: existingSpot.id,
+    userId,
+    startDate,
+    endDate,
+  };
 
-      if (
-        new Date(newBooking.endDate) >= new Date(booking.startDate) &&
-        new Date(newBooking.endDate) <= new Date(booking.endDate)
-      ) {
-        const err = new Error(
-          "Sorry, this spot is already booked for the specified dates"
-        );
-        err.status = 403;
-        err.errors = {
-          startDate: "Start date surrounds an existing booking",
-          endDate: "End date conflicts with an existing booking",
-        };
-        return next(err);
-      }
-
-      if (
-        new Date(newBooking.startDate) <= new Date(booking.startDate) &&
-        new Date(newBooking.endDate) >= new Date(booking.endDate)
-      ) {
-        const err = new Error(
-          "Sorry, this spot is already booked for the specified dates"
-        );
-        err.status = 403;
-        err.errors = {
-          startDate: "Start date surrounds an existing booking",
-          endDate: "End date surrounds an existing booking",
-        };
-        return next(err);
-      }
-    }
-
-    if (new Date(startDate) >= new Date(endDate)) {
-      const err = new Error("Bad Request");
-      err.status = 400;
+  for (const booking of existingBookings) {
+    if (
+      new Date(newBooking.startDate) >= new Date(booking.startDate) &&
+      new Date(newBooking.startDate) <= new Date(booking.endDate)
+    ) {
+      const err = new Error(
+        "Sorry, this spot is already booked for the specified dates"
+      );
+      err.status = 403;
       err.errors = {
-        startDate: "Start date surrounds an existing booking",
-        endDate: "End date cannot be on or before the start date",
+        startDate: "Start date conflicts with an existing booking",
       };
       return next(err);
     }
 
-    const createdBooking = await Booking.create(newBooking);
+    if (
+      new Date(newBooking.endDate) >= new Date(booking.startDate) &&
+      new Date(newBooking.endDate) <= new Date(booking.endDate)
+    ) {
+      const err = new Error(
+        "Sorry, this spot is already booked for the specified dates"
+      );
+      err.status = 403;
+      err.errors = {
+        startDate: "Start date surrounds an existing booking",
+        endDate: "End date conflicts with an existing booking",
+      };
+      return next(err);
+    }
 
-    return res.json(createdBooking);
+    if (
+      new Date(newBooking.startDate) <= new Date(booking.startDate) &&
+      new Date(newBooking.endDate) >= new Date(booking.endDate)
+    ) {
+      const err = new Error(
+        "Sorry, this spot is already booked for the specified dates"
+      );
+      err.status = 403;
+      err.errors = {
+        startDate: "Start date surrounds an existing booking",
+        endDate: "End date surrounds an existing booking",
+      };
+      return next(err);
+    }
   }
-);
 
+  if (new Date(startDate) >= new Date(endDate)) {
+    const err = new Error("Bad Request");
+    err.status = 400;
+    err.errors = {
+      startDate: "Start date surrounds an existing booking",
+      endDate: "End date cannot be on or before the start date",
+    };
+    return next(err);
+  }
+
+  const createdBooking = await Booking.create(newBooking);
+
+  return res.json(createdBooking);
+});
 
 module.exports = router;
