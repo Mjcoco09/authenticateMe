@@ -285,7 +285,7 @@ router.get("/:spotId", async (req, res, next) => {
 
 
   const spot = await Spot.findOne(filter);
-  
+
   if (!spot) {
     const err = new Error("Spot couldn't be found");
     err.status = 404;
@@ -321,17 +321,21 @@ router.get("/:spotId", async (req, res, next) => {
 router.post("/", [requireAuth, validSpot], async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
     req.body;
+
+    const latNumber = parseFloat(lat);
+    const lngNumber = parseFloat(lng);
+    const priceNumber = parseFloat(price);
   const ownerId = req.user.id;
   const spot = await Spot.create({
     address,
     city,
     state,
     country,
-    lat,
-    lng,
+    lat:latNumber,
+    lng:lngNumber,
     name,
     description,
-    price,
+    price:priceNumber,
     ownerId,
   });
   return res.json(spot);
