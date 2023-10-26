@@ -328,13 +328,16 @@ router.post("/", [requireAuth, validSpot], async (req, res) => {
     city,
     state,
     country,
-    lat:Number(parseFloat(lat)),
-    lng:Number(parseFloat(lng)),
+    lat,
+    lng,
     name,
     description,
-    price:Number(parseFloat(price)),
+    price,
     ownerId,
   });
+  spot.lat= Number(spot.lat)
+  spot.lng=Number(spot.lng)
+  spot.price=Number(spot.price)
   return res.json(spot);
 });
 
