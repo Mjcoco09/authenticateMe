@@ -285,6 +285,9 @@ router.get("/:spotId", async (req, res, next) => {
 
 
   const spot = await Spot.findOne(filter);
+  spot.lat= Number(spot.lat)
+  spot.lng=Number(spot.lng)
+  spot.price=Number(spot.price)
 
   if (!spot) {
     const err = new Error("Spot couldn't be found");
