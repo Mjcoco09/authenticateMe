@@ -138,10 +138,12 @@ const validSpot = [
     .withMessage("Country is required"),
   check("lat")
     .exists({ checkFalsy: true })
+    .isLength({ min :-180 ,max: 180 })
     .isFloat()
     .withMessage("Latitude is not valid"),
   check("lng")
     .exists({ checkFalsy: true })
+    .isLength({ min :-180 ,max: 180 })
     .isFloat()
     .withMessage("Longitude is not valid"),
   check("name")
@@ -153,6 +155,7 @@ const validSpot = [
     .withMessage("Description is required"),
   check("price")
     .exists({ checkFalsy: true })
+    .isLength({ min :1 })
     .withMessage("Price per day is required"),
   handleValidationErrors,
 ];
