@@ -89,9 +89,7 @@ router.get("/", async (req, res, next) => {
   for (const spot of spots.rows) {
     const avgRatingResult = await Review.findOne({
       where: { spotId: spot.id },
-      attributes: [
-        [sequelize.fn("avg", sequelize.col("stars")), "avgRating"],
-      ],
+      attributes: [[sequelize.fn("avg", sequelize.col("stars")), "avgRating"]],
       raw: true,
     });
 
@@ -109,7 +107,7 @@ router.get("/", async (req, res, next) => {
     city: spot.city,
     state: spot.state,
     country: spot.country,
-    lat:parseFloat(spot.lat),
+    lat: parseFloat(spot.lat),
     lng: parseFloat(spot.lng),
     name: spot.name,
     description: spot.description,
@@ -138,6 +136,7 @@ const validSpot = [
     .withMessage("Country is required"),
   check("lat")
     .exists({ checkFalsy: true })
+    .isFloat()
     .custom((value) => {
       if (value < -180 || value > 180) {
         throw new Error("Latitude is not valid");
@@ -147,6 +146,7 @@ const validSpot = [
     .withMessage("Latitude is not valid"),
   check("lng")
     .exists({ checkFalsy: true })
+    .isFloat()
     .custom((value) => {
       if (value < -180 || value > 180) {
         throw new Error("Longitude is not valid");
@@ -162,6 +162,7 @@ const validSpot = [
     .exists({ checkFalsy: true })
     .withMessage("Description is required"),
   check("price")
+    .isFloat()
     .exists({ checkFalsy: true })
     .custom((value) => {
       if (value < 1) {
@@ -182,9 +183,6 @@ const validReview = [
     .withMessage("Stars must be an integer from 1 to 5"),
   handleValidationErrors,
 ];
-
-
-
 
 router.get("/current", requireAuth, async (req, res, next) => {
   const currentUserId = req.user.id;
@@ -224,12 +222,7 @@ router.get("/current", requireAuth, async (req, res, next) => {
   for (const spot of spots) {
     const avgRatingResult = await Review.findOne({
       where: { spotId: spot.id },
-      attributes: [
-        [
-          sequelize.fn("avg", sequelize.col("stars")),
-          "avgRating",
-        ],
-      ],
+      attributes: [[sequelize.fn("avg", sequelize.col("stars")), "avgRating"]],
       raw: true,
     });
 
@@ -298,19 +291,16 @@ router.get("/:spotId", async (req, res, next) => {
     ],
   };
 
-
-
   const spot = await Spot.findOne(filter);
-  spot.lat= Number(spot.lat)
-  spot.lng=Number(spot.lng)
-  spot.price=Number(spot.price)
+  spot.lat = Number(spot.lat);
+  spot.lng = Number(spot.lng);
+  spot.price = Number(spot.price);
 
   if (!spot) {
     const err = new Error("Spot couldn't be found");
     err.status = 404;
     return next(err);
   }
-
 
   const numReviewsResult = await Review.count({
     where: { spotId: spot.id },
@@ -319,10 +309,7 @@ router.get("/:spotId", async (req, res, next) => {
   const avgRatingResult = await Review.findOne({
     where: { spotId: spot.id },
     attributes: [
-      [
-        sequelize.fn("avg", sequelize.col("stars")),
-        "avgStarRating",
-      ],
+      [sequelize.fn("avg", sequelize.col("stars")), "avgStarRating"],
     ],
     raw: true,
   });
@@ -334,8 +321,6 @@ router.get("/:spotId", async (req, res, next) => {
 
   return res.json(spot);
 });
-
-
 
 router.post("/", [requireAuth, validSpot], async (req, res) => {
   const { address, city, state, country, lat, lng, name, description, price } =
@@ -354,9 +339,9 @@ router.post("/", [requireAuth, validSpot], async (req, res) => {
     price,
     ownerId,
   });
-  spot.lat= Number(spot.lat)
-  spot.lng=Number(spot.lng)
-  spot.price=Number(spot.price)
+  spot.lat = Number(spot.lat);
+  spot.lng = Number(spot.lng);
+  spot.price = Number(spot.price);
   return res.json(spot);
 });
 
@@ -365,8 +350,6 @@ router.post("/:spotId/images", requireAuth, async (req, res, next) => {
   const thisSpotId = Number(req.params.spotId);
   const { user } = req;
   const spot = await Spot.findByPk(thisSpotId);
-
-
 
   if (!spot) {
     const err = new Error();
