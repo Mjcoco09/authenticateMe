@@ -138,11 +138,21 @@ const validSpot = [
     .withMessage("Country is required"),
   check("lat")
     .exists({ checkFalsy: true })
-    .isLength({ min :-180 ,max: 180 })
+    .custom((value) => {
+      if (value < -180 || value > 180) {
+        throw new Error("Latitude is not valid");
+      }
+      return true;
+    })
     .withMessage("Latitude is not valid"),
   check("lng")
     .exists({ checkFalsy: true })
-    .isLength({ min :-180 ,max: 180 })
+    .custom((value) => {
+      if (value < -180 || value > 180) {
+        throw new Error("Longitude is not valid");
+      }
+      return true;
+    })
     .withMessage("Longitude is not valid"),
   check("name")
     .exists({ checkFalsy: true })
@@ -153,7 +163,12 @@ const validSpot = [
     .withMessage("Description is required"),
   check("price")
     .exists({ checkFalsy: true })
-    .isLength({ min :1 })
+    .custom((value) => {
+      if (value < 1) {
+        throw new Error("Price per day is required");
+      }
+      return true;
+    })
     .withMessage("Price per day is required"),
   handleValidationErrors,
 ];
