@@ -292,15 +292,15 @@ router.get("/:spotId", async (req, res, next) => {
   };
 
   const spot = await Spot.findOne(filter);
-  spot.lat = Number(spot.lat);
-  spot.lng = Number(spot.lng);
-  spot.price = Number(spot.price);
-
   if (!spot) {
     const err = new Error("Spot couldn't be found");
     err.status = 404;
     return next(err);
   }
+  spot.lat = Number(spot.lat);
+  spot.lng = Number(spot.lng);
+  spot.price = Number(spot.price);
+
 
   const numReviewsResult = await Review.count({
     where: { spotId: spot.id },
@@ -579,6 +579,7 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
       err.status = 403;
       err.errors = {
         startDate: "Start date conflicts with an existing booking",
+        endDate: "End date conflicts with an existing booking"
       };
       return next(err);
     }
@@ -592,7 +593,7 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
       );
       err.status = 403;
       err.errors = {
-        startDate: "Start date surrounds an existing booking",
+        startDate: "Start date conflicts with an existing booking",
         endDate: "End date conflicts with an existing booking",
       };
       return next(err);
@@ -607,7 +608,7 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
       );
       err.status = 403;
       err.errors = {
-        startDate: "Start date surrounds an existing booking",
+        startDate: "Start date conflicts with an existing booking",
         endDate: "End date surrounds an existing booking",
       };
       return next(err);
@@ -618,7 +619,6 @@ router.post("/:spotId/bookings", requireAuth, async (req, res, next) => {
     const err = new Error("Bad Request");
     err.status = 400;
     err.errors = {
-      startDate: "Start date surrounds an existing booking",
       endDate: "End date cannot be on or before the start date",
     };
     return next(err);

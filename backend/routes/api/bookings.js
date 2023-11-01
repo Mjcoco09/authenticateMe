@@ -87,7 +87,7 @@ router.put("/:bookingId", requireAuth,async (req, res, next) => {
   }
 
   if (existingSpot.ownerId === userId) {
-    const err = new Error("You cannot edit a booking for your own spot");
+    const err = new Error("Forbidden");
     err.status = 403;
     return next(err);
   }
