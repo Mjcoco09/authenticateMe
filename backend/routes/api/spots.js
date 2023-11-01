@@ -24,25 +24,48 @@ router.get("/", async (req, res, next) => {
   const maxPrice = parseFloat(req.query.maxPrice) || 0;
 
   if (
-    page < 1 ||
-    size < 1 ||
-    minLat > maxLat ||
-    minLng > maxLng ||
-    minPrice > maxPrice
+    page < 0 ||
+    size < 0 ||
+    minLat < -180 || minLat > 180 ||
+    maxLat < -180 || maxLat > 180 ||
+    minLng < -180 || minLng > 180 ||
+    maxLng < -180 || maxLng > 180 ||
+    minPrice < 0 ||
+    maxPrice < 0
   ) {
-    const errors = {
-      page: page < 1 ? "Page must be greater than or equal to 1" : undefined,
-      size: size < 1 ? "Size must be greater than or equal to 1" : undefined,
-      minLat: minLat > maxLat ? "Minimum latitude is invalid" : undefined,
-      maxLat: undefined,
-      minLng: minLng > maxLng ? "Minimum longitude is invalid" : undefined,
-      maxLng: undefined,
-      minPrice:
-        minPrice > maxPrice
-          ? "Minimum price must be greater than or equal to 0"
-          : undefined,
-      maxPrice: undefined,
-    };
+    const errors = {};
+
+    if (page <= 1) {
+      errors.page = "Page must be greater than or equal to 1";
+    }
+
+    if (size <= 1) {
+      errors.size = "Size must be greater than or equal to 1";
+    }
+
+    if (minLat < -180 || minLat > 180) {
+      errors.minLat = "Minimum latitude is invalid";
+    }
+
+    if (maxLat < -180 || maxLat > 180) {
+      errors.maxLat = "Maximum latitude is invalid";
+    }
+
+    if (minLng < -180 || minLng > 180) {
+      errors.minLng = "Minimum longitude is invalid";
+    }
+
+    if (maxLng < -180 || maxLng > 180) {
+      errors.maxLng = "Maximum longitude is invalid";
+    }
+
+    if (minPrice < 0) {
+      errors.minPrice = "Minimum price must be greater than or equal to 0";
+    }
+
+    if (maxPrice < 0) {
+      errors.maxPrice = "Maximum price must be greater than or equal to 0";
+    }
 
     const err = new Error("Bad Request");
     err.status = 400;
@@ -388,7 +411,7 @@ router.put("/:spotId", [requireAuth, validSpot], async (req, res, next) => {
     const err = new Error();
     err.status = 404;
     err.message = "Spot couldn't be found";
-    return err;
+    return next(err);
   }
   if (spot.ownerId !== req.user.id) {
     const err = new Error();
