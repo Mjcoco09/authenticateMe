@@ -1,0 +1,51 @@
+ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+    margin: 0;
+    background-color: #333;
+    justify-content: flex-end;
+    align-items: center;
+    height: 50px;
+    position: relative;
+  }
+
+  li {
+    margin: 0 10px;
+  }
+
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: white;
+    display: flex;
+    align-items: center;
+  }
+
+  .profile-dropdown {
+    position: absolute;
+    right: 0;
+    background-color: #333;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    list-style: none;
+    padding: 10px;
+    margin: 0;
+    display: none;
+    z-index: 1;
+    color: white;
+  }
+
+  .profile-dropdown li {
+    margin-bottom: 8px;
+  }
+
+  .profile-dropdown.visible {
+    display: block;
+  }
