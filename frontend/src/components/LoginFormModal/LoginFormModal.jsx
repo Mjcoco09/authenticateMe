@@ -11,7 +11,10 @@ function LoginFormModal() {
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
   const [err, setErr] = useState({});
+  const [buttonPressed, setButtonPressed] = useState(false);
+
   useEffect(() => {
+    if(buttonPressed){
     const newErr = {};
 
     if (credential.length < 4) {
@@ -26,13 +29,15 @@ function LoginFormModal() {
       newErr.password = "";
     }
 
-    setErr(newErr);
-  }, [credential, password]);
 
+    setErr(newErr);
+  }
+  }, [credential, password,buttonPressed]);
 
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setButtonPressed(true);
     setErrors({});
     return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal)
@@ -40,6 +45,7 @@ function LoginFormModal() {
         const data = await res.json();
         if (data && data.errors) {
           setErrors(data.errors);
+
         }
       });
   };
@@ -68,13 +74,15 @@ function LoginFormModal() {
             required
           />
         </label>
+        {errors.credential && <p>{errors.credential}</p>}
         {err.password && <p>{err.password}</p>}
         <button disabled={err.credential || err.password}  type="submit" className="login">
           Log In
         </button>
+
       </form>
     </>
   );
 }
 
-export default LoginFormModal;
+export default LoginFormModal

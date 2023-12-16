@@ -37,7 +37,17 @@ function ProfileButton({ user }) {
     dispatch(sessionActions.logout());
     closeMenu();
   };
-
+  const handleDemoUser = () => {
+    // Dispatch login with demo user credentials
+    dispatch(sessionActions.login({
+      credential: "demouser@demo.com",
+      password: "demopassword",
+    }))
+      .then(closeMenu)
+      .catch((error) => {
+        console.error("Demo user login error:", error);
+      });
+  };
   const ulClassName = `profile-dropdown ${showMenu ? 'visible' : 'hidden'}`;
 
   return (
@@ -49,7 +59,7 @@ function ProfileButton({ user }) {
         {user ? (
           <>
             <li>{user.username}</li>
-            <li>{user.firstName} {user.lastName}</li>
+            <li>{"Hello "}{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
             <li>
               <button onClick={logout}>Log Out</button>
@@ -71,9 +81,20 @@ function ProfileButton({ user }) {
                 modalComponent={<SignupFormModal />}
               />
             </li>
+
+            <li>
+            <button
+                type="button"
+                onClick={handleDemoUser}
+                className="demo-user"
+              >
+                Demo User
+              </button>
+            </li>
           </>
         )}
       </ul>
+
     </>
   );
 }
