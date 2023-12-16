@@ -1,23 +1,22 @@
-
-form {
+#sign-form {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
+#sign-form h1 {
   text-align: center;
   color: #333;
 }
 
-label {
+#sign-form label {
   display: block;
   margin: 10px 0;
   color: #555;
 }
 
-input {
+#sign-form input {
   width: 100%;
   padding: 8px;
   margin-top: 4px;
@@ -27,12 +26,12 @@ input {
   box-sizing: border-box;
 }
 
-p {
-  color: #d9534f;
+#sign-form p {
+  color: #5bc0de;
   margin: 0;
 }
 
-button {
+#sign-form button {
   width: 100%;
   padding: 10px;
   background-color: #5bc0de;
@@ -42,7 +41,8 @@ button {
   cursor: pointer;
   transition: background-color 0.3s;
 }
+/* 
+#sign-form button:hover {
 
-button:hover {
   background-color: #31b0d5;
-}
+} */

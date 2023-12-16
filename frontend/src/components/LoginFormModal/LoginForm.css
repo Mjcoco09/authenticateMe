@@ -1,41 +1,43 @@
-
 h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
+  text-align: center;
+  margin-bottom: 20px;
+}
+.input-group {
+  margin-bottom: 16px;
+}
+#login-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 300px;
+  margin: 0 auto;
+  gap: 16px;
+}
 
-  form {
-    display: flex;
-    flex-direction: column;
-    max-width: 300px;
-    margin: 0 auto;
-  }
+label {
+  margin-bottom: 8px;
+}
 
-  label {
-    margin-bottom: 8px;
-  }
+input {
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 
-  input {
-    padding: 8px;
-    margin-bottom: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
+.login{
+  padding: 10px;
+  background-color:#5bc0de;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.login:disabled {
+  background-color: #ddd;
+  cursor: not-allowed;
+  padding: 10px;
+}
 
-  button {
-    padding: 10px;
-    background-color: rgb(203, 1, 31);
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background-color: #b30000;
-  }
-
-  p {
-    color: red;
-    margin-top: 8px;
-  }
+p {
+  color: red;
+  margin-top: -35px}

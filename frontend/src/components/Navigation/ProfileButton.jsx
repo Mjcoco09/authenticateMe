@@ -16,20 +16,20 @@ function ProfileButton({ user }) {
     setShowMenu(!showMenu);
   };
 
-  useEffect(() => {
-    if (!showMenu) return;
 
+  useEffect(() => {
     const closeMenu = (e) => {
-      if (!ulRef.current.contains(e.target)) {
+      if (ulRef.current && !ulRef.current.contains(e.target)) {
         setShowMenu(false);
       }
     };
 
     document.addEventListener('click', closeMenu);
 
-    return () => document.removeEventListener("click", closeMenu);
-  }, [showMenu]);
-
+    return () => {
+      document.removeEventListener('click', closeMenu);
+    };
+  }, []);
   const closeMenu = () => setShowMenu(false);
 
   const logout = (e) => {
@@ -38,7 +38,7 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
-  const ulClassName = "profile-dropdown" + (showMenu ? "" : "hidden");
+  const ulClassName = `profile-dropdown ${showMenu ? 'visible' : 'hidden'}`;
 
   return (
     <>
