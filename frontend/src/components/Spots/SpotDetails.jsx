@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchSpotDetails } from "../../store/spot";
+import starImage from "../../../../images/star.png";
+import ReviewPage from "../Reviews/review";
+import "./SpotDetails.css";
 
 const SpotDetailsPage = () => {
   const dispatch = useDispatch();
@@ -10,7 +13,6 @@ const SpotDetailsPage = () => {
     dispatch(fetchSpotDetails(spotId));
   }, [dispatch, spotId]);
 
-  console.log("this is spot id :#########", spotId);
   const spotState = useSelector((state) => state.spot);
   const spot = spotState.spotDetails;
 
@@ -56,12 +58,58 @@ const SpotDetailsPage = () => {
         <p className="text">Description: {spot.description}</p>
       </div>
       <div className="reserveContainer">
-  <button className="reserveButton" onClick={alertButton}>
-  <p className="text priceText">${spot.price} per night</p>
-    Reserve
-  </button>
-</div>
-
+        <p className="text priceText">${spot.price} per night</p>
+        {isNaN(spot.avgStarRating) || spot.avgStarRating === null ? (
+          <>
+            <br />
+            <p className="new">NEW</p>
+            <br />
+          </>
+        ) : (
+          <div className="star-container">
+            <img
+              src={starImage}
+              alt={`Star ${spot.avgStarRating}`}
+              className="star-image"
+            />
+            <span className="text">{spot.avgStarRating}</span>
+          </div>
+        )}
+        <button className="reserveButton" onClick={alertButton}>
+          Reserve
+        </button>
+        {spot.numReviews > 0 && (
+          <p className="text">
+            {spot.numReviews} {spot.numReviews === 1 ? "Review" : "Reviews"}
+          </p>
+        )}
+      </div>
+      <div className="dividerLine"></div>
+      <div className="reviewSection">
+       { isNaN(spot.avgStarRating) || spot.avgStarRating === null ? (
+        <>
+          <br />
+          <p className="new">NEW</p>
+          <br />
+        </>
+        ) : (
+        <div className="star-container">
+          <img
+            src={starImage}
+            alt={`Star ${spot.avgStarRating}`}
+            className="star-image"
+          />
+          <span className="text">{spot.avgStarRating}</span>
+        </div>
+        )}
+         {spot.numReviews > 0 && (
+          <p className="text">
+            {spot.numReviews} {spot.numReviews === 1 ? "Review" : "Reviews"}
+          </p>
+        )}
+      </div>
+          <br/>
+      <ReviewPage />
     </div>
   );
 };

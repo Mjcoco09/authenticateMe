@@ -1,0 +1,14 @@
+.name {
+    font-weight: bold;
+    color:black
+  }
+
+  .date {
+    font-style: italic;
+    color: #000000;
+  }
+
+  .review {
+    white-space: pre-line;
+    color:darkgrey
+  }

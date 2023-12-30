@@ -1,76 +1,74 @@
-
-
 .spot-list-container {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-  .spot-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-  }
+.spot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
 
-  .spot-tile {
-    border: 1px solid #ddd;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+.spot-tile {
+  border: 1px solid #ddd;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
 
-  .spot-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
+.spot-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
 
-  .text {
-    color:black;
-    font-weight:bolder;
-    font-family: cursive;
-  }
-
-  .new{
-    color: rgb(226, 114, 1);
-    font-weight: bold;
-    font-family: monospace;
-  }
+.new {
+  color: rgb(226, 114, 1);
+  font-weight: bold;
+  font-family: monospace;
+}
 
 .spot-tile .tooltip {
-    display: none;
-    position: absolute;
-    background-color: #171717;
-    color: #ffffff;
-    padding: 5px;
-    border-radius: 5px;
-    z-index: 1;
-    opacity: 40%;
-  }
+  display: none;
+  position: absolute;
+  background-color: #171717;
+  color: #ffffff;
+  padding: 5px;
+  border-radius: 5px;
+  z-index: 1;
+  opacity: 40%;
+}
 
-  .spot-tile:hover .tooltip {
-    display: block;
-  }
-  .reserveContainer {
-    border: 1px solid black;
-    width: 120px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    padding: 10px;
-    margin-left: auto;
-    border-radius: 8px
-  }
+.spot-tile:hover .tooltip {
+  display: block;
+}
 
-  .reserveButton {
-    color: black;
-    background-color: white;
-    padding: 8px 16px;
-    border: none;
-    outline: none;
-    box-shadow: none;
-    cursor: pointer;
-  }
 
-  .priceText {
-    margin-bottom: 8px;
-  }
+
+.priceText {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.star-container {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.star-image {
+  margin-right: 5px;
+  width: 16px;
+  height: 16px;
+}
+
+.text {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  color: black;
+  font-weight: bolder;
+  font-family: cursive;
+}
+
