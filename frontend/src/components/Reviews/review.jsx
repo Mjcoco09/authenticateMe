@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchReviews } from "../../store/review";
-import "./review.css"; // Import the CSS file
+import "./review.css";
 
 const ReviewPage = () => {
   const dispatch = useDispatch();
