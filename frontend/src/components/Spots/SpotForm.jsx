@@ -23,7 +23,7 @@ const SpotForm = () => {
   const [imgThree, setImgThree] = useState("");
   const [imgFour, setImgFour] = useState("");
   const [imgFive, setImgFive] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState({});
 
   const updateLat = (e) => setLat(e.target.value);
   const updateLng = (e) => setLng(e.target.value);
@@ -40,10 +40,55 @@ const SpotForm = () => {
   const updateImgThree = (e) => setImgThree(e.target.value);
   const updateImgFour = (e) => setImgFour(e.target.value);
   const updateImgFive = (e) => setImgFive(e.target.value);
+  let counter = 0
+
+  useEffect(() => {
+    const newErr = {};
+    if (!country) {
+      newErr.country = "Country is required";
+    }
+    if (!address) {
+      newErr.address = "Address is required";
+    }
+    if (!lat) {
+      newErr.lat = "Latitude is required";
+    }
+    if (!lng) {
+      newErr.lng = "Longitude is required";
+    }
+    if (!city) {
+      newErr.city = "City is required";
+    }
+    if (!state) {
+      newErr.state = "State is required";
+    }
+    if (!name) {
+      newErr.name = "Name is required";
+    }
+    if (!price) {
+      newErr.price = "Price is required";
+    }
+    if (!prevImg) {
+      newErr.prevImg = "Preview image is required";
+    }
+
+    if (description && description.length < 30) {
+      newErr.description = "Description needs a minimum of 30 characters";
+    }
+    if (prevImg && !/\.(png|jpg|jpeg)$/.test(prevImg.toLowerCase())) {
+      newErr.prevImg = "Image URL must end in .png, .jpg, or .jpeg";
+    }
+    if (imgOne && !/\.(png|jpg|jpeg)$/.test(imgOne.toLowerCase())) {
+        newErr.imgOne = "Image URL must end in .png, .jpg, or .jpeg";
+      }
+
+    setError(newErr);
+  }, [country, address, lat, lng, city, state, name, price, prevImg, description,imgOne]);
+
 
   const handleSubmit = async (e) => {
+    counter ++
     e.preventDefault();
-
     const spotData = {
       country,
       address,
@@ -55,15 +100,15 @@ const SpotForm = () => {
       lat,
       lng,
     };
-    console.log(spotData,"this is spot data")
 
     let createdSpot;
     createdSpot = await dispatch(createSpot(spotData));
-    const spotId = createSpot.id
-    dispatch(spotImage({prevImg,spotId}))
+    const spotId = createSpot.id;
+    dispatch(spotImage({ prevImg, spotId }));
     if (createdSpot) {
       navigate(`/spots/${createdSpot.id}`);
     }
+
   };
 
   return (
@@ -75,73 +120,81 @@ const SpotForm = () => {
       </h2>
       <form onSubmit={handleSubmit}>
         <div className="formContainer">
-
           <input
             type="text"
             placeholder="Country"
-            required
             value={country}
             onChange={updateCountry}
           />
+          <br/>
+           {error.country && <p className="error">{error.country}</p>}
           <input
             type="text"
             placeholder="Address"
-            required
             value={address}
             onChange={updateAddress}
           />
+          <br/>
+           { error.address && <p className="error">{error.address}</p>}
           <input
             type="number"
             placeholder="Latitude"
-            required
             value={lat}
             onChange={updateLat}
           />
+          <br/>
+           { error.lat && <p className="error">{error.lat}</p>}
           <input
             type="number"
             placeholder="Longitude"
-            required
             value={lng}
             onChange={updateLng}
           />
+          <br/>
+           { error.lng && <p className="error">{error.lng}</p>}
           <input
             type="text"
             placeholder="City"
-            required
             value={city}
             onChange={updateCity}
           />
+          <br/>
+           { error.city && <p className="error">{error.city}</p>}
           <input
             type="text"
             placeholder="State"
-            required
             value={state}
             onChange={updateState}
           />
+          <br/>
+           { error.state && <p className="error">{error.state}</p>}
           <div className="dividerLine"></div>
           <h2>Describe your place to guests</h2>
           <h3>
             Mention the best features of your space, any special amentities like
             fast wif or parking, and what you love about the neighborhood.
           </h3>
+
           <input
             className="desc"
             type="text"
             placeholder="Please write at least 30 characters"
-            required
             value={description}
             onChange={updateDescription}
           />
+          <br/>
+           { error.description && <p className="error">{error.description}</p>}
           <div className="dividerLine"></div>
           <h2>Create a title for your spot</h2>
           <h3></h3>
           <input
             type="text"
             placeholder="Name of your spot"
-            required
             value={name}
             onChange={updateName}
           />
+          <br/>
+           { error.name && <p className="error">{error.name}</p>}
           <div className="dividerLine"></div>
           <h2>Set a base price for your spot</h2>
           <h3>
@@ -152,27 +205,30 @@ const SpotForm = () => {
           <input
             type="number"
             placeholder="Price per night (USD)"
-            required
             value={price}
             onChange={updatePrice}
           />
+          <br/>
+           { error.price && <p className="error">{error.price}</p>}
           <div className="dividerLine"></div>
           <h2>Liven up your spot with photos</h2>
           <h3>Submit a link to at least one photo to publish your spot.</h3>
           <input
             type="text"
             placeholder="Preview Image URL "
-
             value={prevImg}
             onChange={updatePrevImg}
           />
+          <br/>
+           { error.prevImg && <p className="error">{error.prevImg}</p>}
           <input
             type="text"
             placeholder="Image URL "
-
             value={imgOne}
             onChange={updateImgOne}
           />
+          <br/>
+           {counter <= 1 && error.imgOne && <p className="error">{error.imgOne}</p>}
           <input
             type="text"
             placeholder="Image URL "
@@ -197,7 +253,7 @@ const SpotForm = () => {
             value={imgFive}
             onChange={updateImgFive}
           />
-          <button type="submit" className="submitB">
+          <button type="submit" className="submitB" disabled={error.name || error.country || error.address||error.lat ||error.lng ||error.city ||error.state ||error.price ||error.prevImg ||error.description||error.imgOne}>
             Create a new spot
           </button>
         </div>

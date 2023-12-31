@@ -21,7 +21,7 @@ function Navigation({ isLoaded }) {
           </NavLink>
         </li>
         <li>
-          <button onClick={handleCreateSpot}>Create a spot</button>
+          <button onClick={handleCreateSpot} className="createButton">Create a spot</button>
 
         </li>
         {isLoaded && (
