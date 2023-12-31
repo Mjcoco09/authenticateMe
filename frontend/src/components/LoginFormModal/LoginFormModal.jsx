@@ -5,13 +5,20 @@ import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
 
 function LoginFormModal() {
+  const { closeModal } = useModal();
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const { closeModal } = useModal();
   const [err, setErr] = useState({});
   const [buttonPressed, setButtonPressed] = useState(false);
+  const handleDemoUser = () => {
+    dispatch(sessionActions.login({
+      credential: "demouser@demo.com",
+      password: "demopassword",
+    }))
+    closeModal()
+  };
 
   useEffect(() => {
     if(buttonPressed){
@@ -79,7 +86,13 @@ function LoginFormModal() {
         <button disabled={err.credential || err.password}  type="submit" className="login">
           Log In
         </button>
-
+        <button
+                type="button"
+                onClick={handleDemoUser}
+                className="demo-user"
+              >
+                Demo User
+              </button>
       </form>
     </>
   );

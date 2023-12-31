@@ -1,5 +1,4 @@
 .nav {
-
   list-style: none;
   display: flex;
   padding: 0;
@@ -10,14 +9,14 @@
   height: 50px;
   position: relative;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-  justify-content: space-between
+  /* justify-content: space-between */
 }
 
  li.nav-item {
      margin: 0 10px;
    }
 .logo-item {
-  margin-right: 10px;
+  margin-right: auto;
 }
 .logo {
   display: flex;
@@ -61,13 +60,11 @@ button {
 .profile-dropdown.visible {
   display: block;
 }
-.createButton{
-  right:0;
+.createButton {
   background-color: #333;
   box-shadow: 0 0 10px rgba(41, 41, 41, 0.5);
   border-radius: 4px;
   list-style: none;
   padding: 10px;
-  z-index:1;
   color: white;
 }

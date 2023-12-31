@@ -8,6 +8,11 @@ const EDIT_SPOT = "spots/EDIT_SPOT"
 const DELETE_SPOT = "spots.DELETE_SPOT"
 
 
+const deleteSpot = (spotId) => ({
+  type: DELETE_SPOT,
+  spotId,
+});
+
 const edSpot = (payload) => ({
 type :EDIT_SPOT,
 payload
@@ -38,18 +43,32 @@ const loadSpotDetails = (spotDetails) => ({
   spotDetails,
 });
 
-export const spotImage = ({prevImg,spotId}) => async (dispatch) => {
+export const removeSpot = (spotId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
+    method: "DELETE",
+  });
+
+  if (res.ok) {
+    dispatch(deleteSpot(spotId));
+
+  } else {
+    const err = await res.json();
+    return err;
+  }
+};
+
+
+export const spotImage = (previewImage,spotId) => async (dispatch) => {
   const preview = true
   const res= await csrfFetch(`api/spots/${spotId}/images` , {
     method: "POST",
-    body: JSON.stringify({prevImg,preview})
+    body: JSON.stringify(previewImage,preview)
   })
 
   const data =await res.json()
-  dispatch(postImage(data.prevImg))
+  console.log(data,"$$$$$$$$$$$$$$")
+  dispatch(postImage(data))
   return data
-
-
 }
 
 export const createSpot = (payload) => async (dispatch) => {
@@ -131,7 +150,10 @@ const spotReducer = (state = {}, action) => {
         const updatedSpotDetails = { ...state.spotDetails, ...action.payload };
         return { ...state, spotDetails: updatedSpotDetails };
       }
-
+      case DELETE_SPOT: {
+        const updatedSpots = state.spots.filter((spot) => spot.id !== action.spotId);
+        return { ...state, spots: updatedSpots };
+      }
     case LOAD_SPOTS:
       return { ...state, spots: action.data, error: null };
       case LOAD_CURRENT :
@@ -139,7 +161,7 @@ const spotReducer = (state = {}, action) => {
     case LOAD_SPOT_DETAILS:
       return { ...state, spotDetails: action.spotDetails };
     case ADD_IMAGE:
-      return { ...state, images: [...(state.images || []), action.data] };
+      return { ...state, images: action.data };
     default:
       return state;
   }

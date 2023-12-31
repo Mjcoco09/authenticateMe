@@ -8,16 +8,16 @@ function PostReviewModal({navigate}) {
   let createdReview
   const dispatch = useDispatch();
   const { closeModal } = useModal();
+
   const sessionState = useSelector((state) => state.session.user)
   const spotState = useSelector((state) => state.spot)
   const spotId = spotState.spotDetails.id
 
   // const userId = sessionState.user.id
+
   const [stars, setStar] = useState(1);
   const [review, setReviewText] = useState("");
   const [error, setError] = useState({});
-
-
   const updateStar = (e) => setStar(e.target.value);
   const updateText = (e) => setReviewText(e.target.value);
 
@@ -42,16 +42,11 @@ function PostReviewModal({navigate}) {
 
         createdReview = await dispatch(postReview(payload,spotId))
         if(createdReview){
+
           closeModal()
         }
   };
-  // useEffect(()=> {
-  //   if(createdReview){
-  //     navigate(`/spots/${spotId}`);
-  //   }
-
-  // },[createdReview,navigate,spotId])
-
+  
   return (
     <form onSubmit={handleSubmit}>
       <h2>How was your stay?</h2>

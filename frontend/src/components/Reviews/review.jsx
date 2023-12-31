@@ -26,7 +26,6 @@ const ReviewPage = () => {
 
   const sortedReviews = [...reviews].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
-
   return (
     <div className="review-container">
       {reviews.length === 0 ? (

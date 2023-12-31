@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { fetchCurrentSpot } from "../../store/spot";
 import "./SpotList.css";
 import starImage from "../../../../images/star.png";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import DeleteSpot from "./DeleteSpot";
 function CurrentSpots() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,7 +64,10 @@ function CurrentSpots() {
                   >
                     Update
                   </button>
-
+                  <OpenModalButton
+                  buttonText={"Delete"}
+                    modalComponent={<DeleteSpot navigate={navigate}/>}
+                    />
                   <br />
 
                   <div className="tooltip">{spot.name}</div>

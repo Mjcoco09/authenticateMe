@@ -21,10 +21,12 @@ function Navigation({ isLoaded }) {
             <img src={logo} alt="My Logo" className="logo" />
           </NavLink>
         </li>
-        
+
+        {sessionUser &&
         <li>
           <button onClick={handleCreateSpot} className="createButton">Create a spot</button>
         </li>
+}
         {isLoaded && (
           <li>
             <ProfileButton user={sessionUser} />

@@ -42,16 +42,16 @@ function ProfileButton({ user }) {
     dispatch(sessionActions.logout());
     closeMenu();
   };
-  const handleDemoUser = () => {
-    dispatch(sessionActions.login({
-      credential: "demouser@demo.com",
-      password: "demopassword",
-    }))
-      .then(closeMenu)
-      .catch((error) => {
-        console.error("Demo user login error:", error);
-      });
-  };
+  // const handleDemoUser = () => {
+  //   dispatch(sessionActions.login({
+  //     credential: "demouser@demo.com",
+  //     password: "demopassword",
+  //   }))
+  //     .then(closeMenu)
+  //     .catch((error) => {
+  //       console.error("Demo user login error:", error);
+  //     });
+  // };
   const ulClassName = `profile-dropdown ${showMenu ? 'visible' : 'hidden'}`;
 
   return (
@@ -88,14 +88,15 @@ function ProfileButton({ user }) {
                 modalComponent={<SignupFormModal />}
               />
             </li>
+
             <li>
-            <button
+            {/* <button
                 type="button"
                 onClick={handleDemoUser}
                 className="demo-user"
               >
                 Demo User
-              </button>
+              </button> */}
             </li>
           </>
         )}

@@ -7,6 +7,7 @@ import PostReviewModal from "../Reviews/PostReview";
 import starImage from "../../../../images/star.png";
 import ReviewPage from "../Reviews/review";
 import "./SpotDetails.css";
+import DeleteReview from "../Reviews/DeleteReview";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
 
 
@@ -22,7 +23,6 @@ let userId
   let userHasPostedReview
   const reviewState = useSelector((state) => state.review)
   const reviewArr = reviewState.reviews && reviewState.reviews.Reviews;
-  const [modalOpen, setModalOpen] = useState(false);
 
   const dispatch = useDispatch();
   const { spotId } = useParams();
@@ -48,7 +48,7 @@ let userId
   }
 
   if(reviewArr){
-    const userReviewIds = reviewArr.map((review) => review.userId);
+   const userReviewIds = reviewArr.map((review) => review.userId);
     userHasPostedReview = userReviewIds.includes(userId);
   }
 
@@ -143,6 +143,12 @@ let userId
         <ReviewPage />
 
       </div>
+      {currentUser && userHasPostedReview &&
+      <OpenModalButton
+      buttonText="Delete Review"
+      modalComponent={<DeleteReview navigate={navigate}/>}
+      />
+      }
       { currentUser && !userHasPostedReview && !isOwner &&
           <OpenModalButton
             className="postReview"
