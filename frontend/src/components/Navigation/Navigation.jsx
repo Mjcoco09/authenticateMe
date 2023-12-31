@@ -12,6 +12,7 @@ function Navigation({ isLoaded }) {
     navigate("/spots/new");
   };
 
+
   return (
     <>
       <ul className="nav">
@@ -20,14 +21,15 @@ function Navigation({ isLoaded }) {
             <img src={logo} alt="My Logo" className="logo" />
           </NavLink>
         </li>
+        
         <li>
           <button onClick={handleCreateSpot} className="createButton">Create a spot</button>
-
         </li>
         {isLoaded && (
           <li>
             <ProfileButton user={sessionUser} />
           </li>
+
         )}
       </ul>
     </>

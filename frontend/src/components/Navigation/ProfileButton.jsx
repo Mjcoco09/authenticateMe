@@ -1,12 +1,14 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
+import { useNavigate } from "react-router-dom";
 import * as sessionActions from '../../store/session';
 import OpenModalButton from '../OpenModalButton/OpenModalButton';
 import LoginFormModal from '../LoginFormModal/LoginFormModal';
 import SignupFormModal from '../SignupFormModal/SignupFormModal';
 
 function ProfileButton({ user }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const ulRef = useRef();
@@ -15,6 +17,9 @@ function ProfileButton({ user }) {
     e.stopPropagation(); // Keep from bubbling up to document and triggering closeMenu
     setShowMenu(!showMenu);
   };
+  function handleSubmit(){
+    navigate("/spots/current")
+    }
 
 
   useEffect(() => {
@@ -38,7 +43,6 @@ function ProfileButton({ user }) {
     closeMenu();
   };
   const handleDemoUser = () => {
-    // Dispatch login with demo user credentials
     dispatch(sessionActions.login({
       credential: "demouser@demo.com",
       password: "demopassword",
@@ -62,6 +66,9 @@ function ProfileButton({ user }) {
             <li>{"Hello "}{user.firstName} {user.lastName}</li>
             <li>{user.email}</li>
             <li>
+            <button onClick={handleSubmit}>Manage Spots</button>
+          </li>
+            <li>
               <button onClick={logout}>Log Out</button>
             </li>
           </>
@@ -81,7 +88,6 @@ function ProfileButton({ user }) {
                 modalComponent={<SignupFormModal />}
               />
             </li>
-
             <li>
             <button
                 type="button"

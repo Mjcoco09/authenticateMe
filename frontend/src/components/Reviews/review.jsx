@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect,useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchReviews } from "../../store/review";
@@ -8,16 +8,21 @@ const ReviewPage = () => {
   const dispatch = useDispatch();
   const { spotId } = useParams();
 
+
+  const reviewState = useSelector((state) => state.review);
+  const reviews = reviewState.reviews && reviewState.reviews.Reviews;
+  console.log(reviews)
+
   useEffect(() => {
     dispatch(fetchReviews(spotId));
   }, [dispatch, spotId]);
 
-  const reviewState = useSelector((state) => state.review);
-  const reviews = reviewState.reviews && reviewState.reviews.Reviews;
+
 
   if (!reviews) {
     return <div>Loading...</div>;
   }
+
 
   const sortedReviews = [...reviews].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 

@@ -3,6 +3,19 @@ const LOAD_SPOTS = "spots/LOAD_SPOTS";
 const LOAD_SPOT_DETAILS = "spots/LOAD_SPOT_DETAILS";
 const ADD_ONE = "spots/ADD_ONE";
 const ADD_IMAGE= "spots/ADD_IMAGE"
+const LOAD_CURRENT = "spots/LOAD_CURRENT"
+const EDIT_SPOT = "spots/EDIT_SPOT"
+
+
+const edSpot = (payload) => ({
+type :EDIT_SPOT,
+payload
+})
+
+const loadCurr = (data) =>({
+type:LOAD_CURRENT,
+data
+})
 
 const postImage = (data) =>( {
   type:ADD_IMAGE,
@@ -55,6 +68,24 @@ export const createSpot = (payload) => async (dispatch) => {
   }
 };
 
+export const editSpot = (payload) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (res.ok) {
+    const data = await res.json();
+    dispatch(edSpot(data));
+    return data
+  } else {
+    const err = await res.json();
+    console.log(err);
+    return err;
+  }
+};
+
+
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
   const res = await fetch(`/api/spots/${spotId}`);
   const spotDetails = await res.json();
@@ -64,6 +95,19 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
     console.log("no bueno");
   }
 };
+
+export const fetchCurrentSpot = () => async (dispatch) => {
+  const res = await fetch("/api/spots/current")
+  if(res.ok) {
+    const data = await res.json()
+    dispatch(loadCurr(data.Spots))
+    console.log("current available")
+  } else {
+    console.log("current not available")
+    const err = await res.json
+    return err
+  }
+}
 
 export const fetchSpots = () => async (dispatch) => {
   const res = await fetch("/api/spots");
@@ -80,8 +124,12 @@ const spotReducer = (state = {}, action) => {
   switch (action.type) {
     case ADD_ONE:
       return { ...state, spots: [...(state.spots || []), action.payload] };
+      case EDIT_SPOT:
+      return { ...state, spots: [...(state.spots || []), action.payload] };
     case LOAD_SPOTS:
       return { ...state, spots: action.data, error: null };
+      case LOAD_CURRENT :
+        return {...state, spots:action.data}
     case LOAD_SPOT_DETAILS:
       return { ...state, spotDetails: action.spotDetails };
     case ADD_IMAGE:

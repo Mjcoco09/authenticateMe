@@ -4,7 +4,8 @@ import { postReview } from "../../store/review";
 import { useModal } from "../../context/Modal";
 import "./postReview.css"
 
-function PostReviewModal() {
+function PostReviewModal({navigate}) {
+  let createdReview
   const dispatch = useDispatch();
   const { closeModal } = useModal();
   const sessionState = useSelector((state) => state.session.user)
@@ -38,8 +39,18 @@ function PostReviewModal() {
     };
     closeModal
 
-    let createdReview = await dispatch(postReview(payload,spotId))
+
+        createdReview = await dispatch(postReview(payload,spotId))
+        if(createdReview){
+          closeModal()
+        }
   };
+  // useEffect(()=> {
+  //   if(createdReview){
+  //     navigate(`/spots/${spotId}`);
+  //   }
+
+  // },[createdReview,navigate,spotId])
 
   return (
     <form onSubmit={handleSubmit}>
@@ -64,7 +75,7 @@ function PostReviewModal() {
                 value={review}
                 onChange={updateText}
               />
-
+              {error.review && <p>{error.review}</p>}
             </label>
             <button type="submit" className="submitButton" disabled= {error.review}>Submit Your Review</button>
         </div>

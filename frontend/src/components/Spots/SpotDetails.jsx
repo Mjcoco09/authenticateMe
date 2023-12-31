@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { fetchSpotDetails } from "../../store/spot";
 import PostReviewModal from "../Reviews/PostReview";
 import starImage from "../../../../images/star.png";
@@ -11,6 +12,7 @@ import OpenModalButton from "../OpenModalButton/OpenModalButton";
 
 
 const SpotDetailsPage = () => {
+  const navigate = useNavigate();
   const sessionState = useSelector((state) => state.session)
   const currentUser = sessionState.user
 let userId
@@ -145,7 +147,7 @@ let userId
           <OpenModalButton
             className="postReview"
             buttonText="Post Your Reviews"
-            modalComponent={<PostReviewModal /> }
+            modalComponent={<PostReviewModal navigate={navigate} /> }
           />
       }
     <br/>
