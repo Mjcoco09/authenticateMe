@@ -19,13 +19,16 @@ const ReviewPage = () => {
     return <div>Loading...</div>;
   }
 
+  const sortedReviews = [...reviews].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+
   return (
     <div className="review-container">
       {reviews.length === 0 ? (
         <p className="review">Be the first to post a review!</p>
       ) : (
         <>
-          {reviews.map((review) => (
+          {sortedReviews.map((review) => (
             <div key={review.id}>
               <p className="name">
                 {review.User.firstName}

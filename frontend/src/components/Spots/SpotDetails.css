@@ -33,3 +33,18 @@
     width: 100%;
     box-sizing: border-box;
   }
+
+  .postReviewButton {
+    background-color: #007BFF; /* Set your desired background color */
+    color: #FFFFFF; /* Set the text color */
+    padding: 10px 20px; /* Adjust the padding for better spacing */
+    font-size: 16px; /* Set the font size */
+    border: none;
+    border-radius: 5px; /* Add a border radius for rounded corners */
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Add a smooth transition effect */
+  }
+
+  .postReviewButton:hover {
+    background-color: #0056b3; /* Change the background color on hover */
+  }
