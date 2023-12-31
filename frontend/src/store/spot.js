@@ -5,6 +5,7 @@ const ADD_ONE = "spots/ADD_ONE";
 const ADD_IMAGE= "spots/ADD_IMAGE"
 const LOAD_CURRENT = "spots/LOAD_CURRENT"
 const EDIT_SPOT = "spots/EDIT_SPOT"
+const DELETE_SPOT = "spots.DELETE_SPOT"
 
 
 const edSpot = (payload) => ({
@@ -58,18 +59,20 @@ export const createSpot = (payload) => async (dispatch) => {
     body: JSON.stringify(payload),
   });
   if (res.ok) {
+    console.log("res is ok")
     const data = await res.json();
     dispatch(addOneSpot(data));
     return data
   } else {
+    console.log("res isnt ok")
     const err = await res.json();
     console.log(err);
     return err;
   }
 };
 
-export const editSpot = (payload) => async (dispatch) => {
-  const res = await csrfFetch(`/api/spots`, {
+export const editSpot = (payload,spotId) => async (dispatch) => {
+  const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -124,8 +127,11 @@ const spotReducer = (state = {}, action) => {
   switch (action.type) {
     case ADD_ONE:
       return { ...state, spots: [...(state.spots || []), action.payload] };
-      case EDIT_SPOT:
-      return { ...state, spots: [...(state.spots || []), action.payload] };
+      case EDIT_SPOT: {
+        const updatedSpotDetails = { ...state.spotDetails, ...action.payload };
+        return { ...state, spotDetails: updatedSpotDetails };
+      }
+
     case LOAD_SPOTS:
       return { ...state, spots: action.data, error: null };
       case LOAD_CURRENT :

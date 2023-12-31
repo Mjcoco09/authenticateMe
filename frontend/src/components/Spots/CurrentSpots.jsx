@@ -34,7 +34,6 @@ function CurrentSpots() {
                     alt={spot.name}
                     className="spot-image"
                   />
-
                   <br />
                   {isNaN(spot.avgRating) || spot.avgRating === null ? (
                     <>
@@ -54,6 +53,16 @@ function CurrentSpots() {
                   <p className="text">
                     ${spot.price} a night -{spot.city} {spot.state}
                   </p>
+                  <br />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/spots/${spot.id}/edit`);
+                    }}
+                  >
+                    Update
+                  </button>
+
                   <br />
 
                   <div className="tooltip">{spot.name}</div>
