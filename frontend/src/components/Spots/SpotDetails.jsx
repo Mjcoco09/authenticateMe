@@ -6,6 +6,9 @@ import PostReviewModal from "../Reviews/PostReview";
 import starImage from "../../../../images/star.png";
 import ReviewPage from "../Reviews/review";
 import "./SpotDetails.css";
+import OpenModalButton from "../OpenModalButton/OpenModalButton";
+
+
 
 const SpotDetailsPage = () => {
   const sessionState = useSelector((state) => state.session)
@@ -18,12 +21,7 @@ let userId
   const reviewState = useSelector((state) => state.review)
   const reviewArr = reviewState.reviews && reviewState.reviews.Reviews;
   const [modalOpen, setModalOpen] = useState(false);
-  const toggleModal = () => {
-    setModalOpen(!modalOpen);
-  };
-  const closeModal = () => {
-    setModalOpen(false);
-  };
+
   const dispatch = useDispatch();
   const { spotId } = useParams();
   useEffect(() => {
@@ -34,12 +32,12 @@ let userId
   const spot = spotState.spotDetails;
   let ownerId
   let isOwner
-  if(spot){
+  if (spot) {
     ownerId = spot.ownerId
-    if(ownerId === userId){
+    if (ownerId === userId) {
       isOwner = true
-    }else{
-      false
+    } else {
+      isOwner = false
     }
   }
 
@@ -140,15 +138,17 @@ let userId
             {spot.numReviews} {spot.numReviews === 1 ? "Review" : "Reviews"}
           </p>
         )}
-        {currentUser && !userHasPostedReview && !isOwner&&<button className="postReviewButton" onClick={toggleModal}>
-          Post Your Review
-        </button>
-        }
-        {modalOpen && <PostReviewModal onClose={closeModal} />}
+        <ReviewPage />
 
       </div>
-      <br />
-      <ReviewPage />
+      { currentUser && !userHasPostedReview && !isOwner &&
+          <OpenModalButton
+            className="postReview"
+            buttonText="Post Your Reviews"
+            modalComponent={<PostReviewModal /> }
+          />
+      }
+    <br/>
     </div>
   );
 };

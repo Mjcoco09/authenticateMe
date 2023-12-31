@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { postReview } from "../../store/review";
+import { useModal } from "../../context/Modal";
 import "./postReview.css"
 
-function PostReviewModal({ onClose }) {
+function PostReviewModal() {
   const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const sessionState = useSelector((state) => state.session.user)
   const spotState = useSelector((state) => state.spot)
   const spotId = spotState.spotDetails.id
@@ -17,6 +19,7 @@ function PostReviewModal({ onClose }) {
 
   const updateStar = (e) => setStar(e.target.value);
   const updateText = (e) => setReviewText(e.target.value);
+
   useEffect(()=>{
     const newErr = {};
     if(review.length < 10){
@@ -33,43 +36,40 @@ function PostReviewModal({ onClose }) {
       review,
 
     };
+    closeModal
 
-    let createdReview
-    createdReview = await dispatch(postReview(payload,spotId))
-
-
-    onClose();
+    let createdReview = await dispatch(postReview(payload,spotId))
   };
 
   return (
+    <form onSubmit={handleSubmit}>
+      <h2>How was your stay?</h2>
+      <div className="overlay">
+        <div className="modal" onClick={(e) => e.stopPropagation()}>
+          <h1>Post Your Review</h1>
+            <label>
+              Stars:
+              <input
+                type="number"
+                value={stars}
+                onChange={updateStar}
+                min={1}
+                max={5}
+              />
+            </label>
+            <label>
+              Review:
+              <input
+              placeholder="Leave your Review here"
+                value={review}
+                onChange={updateText}
+              />
 
-    <div className="overlay" onClick={onClose}>
-      <div className="modal" onClick={(e) => e.stopPropagation()}>
-        <h1>Post Your Review</h1>
-        <form onSubmit={handleSubmit}>
-          <label>
-            Stars:
-            <input
-              type="number"
-              value={stars}
-              onChange={updateStar}
-              min={1}
-              max={5}
-            />
-          </label>
-          <label>
-            Review:
-            <input
-            placeholder="Leave your Review here"
-              value={review}
-              onChange={updateText}
-            />
-
-          </label>
-          <button type="submit" className="submitButton" disabled= {error.review}>Submit Your Review</button>
-        </form>
+            </label>
+            <button type="submit" className="submitButton" disabled= {error.review}>Submit Your Review</button>
+        </div>
       </div>
-    </div>
+    </form>
   );
 }
 

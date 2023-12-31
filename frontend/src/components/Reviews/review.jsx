@@ -28,10 +28,12 @@ const ReviewPage = () => {
         <p className="review">Be the first to post a review!</p>
       ) : (
         <>
+        <br/>
           {sortedReviews.map((review) => (
             <div key={review.id}>
               <p className="name">
-                {review.User.firstName}
+                {review.User.firstName }
+
                 <br />
               </p>
               <br />
@@ -48,6 +50,7 @@ const ReviewPage = () => {
           ))}
         </>
       )}
+
     </div>
   );
 };
