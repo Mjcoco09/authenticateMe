@@ -7,11 +7,13 @@ import { useModal } from "../../context/Modal";
 const DeleteReview = ({navigate}) => {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
+    const state = useSelector((state) => state);
     const sessionState = useSelector((state) => state.session);
     const reviewState = useSelector((state) => state.review);
     const spotState = useSelector((state) => state.spot)
     const spotId = spotState.spotDetails.id
-
+    console.log("this is state :",state)
+    console.log("this is reviewState :",reviewState)
     const currentUser = sessionState ? sessionState.user : null;
     const userId = currentUser ? currentUser.id : null;
 
