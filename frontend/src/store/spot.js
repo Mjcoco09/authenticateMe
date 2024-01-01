@@ -2,11 +2,10 @@ import { csrfFetch } from "./csrf";
 const LOAD_SPOTS = "spots/LOAD_SPOTS";
 const LOAD_SPOT_DETAILS = "spots/LOAD_SPOT_DETAILS";
 const ADD_ONE = "spots/ADD_ONE";
-const ADD_IMAGE= "spots/ADD_IMAGE"
-const LOAD_CURRENT = "spots/LOAD_CURRENT"
-const EDIT_SPOT = "spots/EDIT_SPOT"
-const DELETE_SPOT = "spots.DELETE_SPOT"
-
+const ADD_IMAGE = "spots/ADD_IMAGE";
+const LOAD_CURRENT = "spots/LOAD_CURRENT";
+const EDIT_SPOT = "spots/EDIT_SPOT";
+const DELETE_SPOT = "spots.DELETE_SPOT";
 
 const deleteSpot = (spotId) => ({
   type: DELETE_SPOT,
@@ -14,19 +13,19 @@ const deleteSpot = (spotId) => ({
 });
 
 const edSpot = (payload) => ({
-type :EDIT_SPOT,
-payload
-})
+  type: EDIT_SPOT,
+  payload,
+});
 
-const loadCurr = (data) =>({
-type:LOAD_CURRENT,
-data
-})
+const loadCurr = (data) => ({
+  type: LOAD_CURRENT,
+  data,
+});
 
-const postImage = (data) =>( {
-  type:ADD_IMAGE,
-  data
-})
+const postImage = (data) => ({
+  type: ADD_IMAGE,
+  data,
+});
 
 const addOneSpot = (payload) => ({
   type: ADD_ONE,
@@ -50,29 +49,27 @@ export const removeSpot = (spotId) => async (dispatch) => {
 
   if (res.ok) {
     dispatch(deleteSpot(spotId));
-
   } else {
     const err = await res.json();
     return err;
   }
 };
 
-
-export const spotImage = ({url,spotId,preview}) => async (dispatch) => {
-  const res= await csrfFetch(`api/spots/${spotId}/images` , {
-    method: "POST",
-    body: JSON.stringify({url,preview})
-  })
-  if (res.ok){
-    const data =await res.json()
-    dispatch(postImage(data))
-    console.log("res is ok")
-    console.log(data)
-    return data
-  }else{
-    console.log("nothing happend")
-  }
-}
+export const spotImage = ({ url, spotId, preview }) =>async (dispatch) => {
+    const res = await csrfFetch(`api/spots/${spotId}/images`, {
+      method: "POST",
+      body: JSON.stringify({ url, preview }),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      dispatch(postImage(data));
+      console.log("res is ok");
+      console.log(data);
+      return data;
+    } else {
+      console.log("nothing happend");
+    }
+  };
 
 export const createSpot = (payload) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots`, {
@@ -81,19 +78,19 @@ export const createSpot = (payload) => async (dispatch) => {
     body: JSON.stringify(payload),
   });
   if (res.ok) {
-    console.log("res is ok")
+    console.log("res is ok");
     const data = await res.json();
     dispatch(addOneSpot(data));
-    return data
+    return data;
   } else {
-    console.log("res isnt ok")
+    console.log("res isnt ok");
     const err = await res.json();
     console.log(err);
     return err;
   }
 };
 
-export const editSpot = (payload,spotId) => async (dispatch) => {
+export const editSpot = (payload, spotId) => async (dispatch) => {
   const res = await csrfFetch(`/api/spots/${spotId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -102,14 +99,13 @@ export const editSpot = (payload,spotId) => async (dispatch) => {
   if (res.ok) {
     const data = await res.json();
     dispatch(edSpot(data));
-    return data
+    return data;
   } else {
     const err = await res.json();
     console.log(err);
     return err;
   }
 };
-
 
 export const fetchSpotDetails = (spotId) => async (dispatch) => {
   const res = await fetch(`/api/spots/${spotId}`);
@@ -122,17 +118,17 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
 };
 
 export const fetchCurrentSpot = () => async (dispatch) => {
-  const res = await fetch("/api/spots/current")
-  if(res.ok) {
-    const data = await res.json()
-    dispatch(loadCurr(data.Spots))
-    console.log("current available")
+  const res = await fetch("/api/spots/current");
+  if (res.ok) {
+    const data = await res.json();
+    dispatch(loadCurr(data.Spots));
+    console.log("current available");
   } else {
-    console.log("current not available")
-    const err = await res.json
-    return err
+    console.log("current not available");
+    const err = await res.json;
+    return err;
   }
-}
+};
 
 export const fetchSpots = () => async (dispatch) => {
   const res = await fetch("/api/spots");
@@ -149,31 +145,30 @@ const spotReducer = (state = {}, action) => {
   switch (action.type) {
     case ADD_ONE:
       return { ...state, spots: [...(state.spots || []), action.payload] };
-      case EDIT_SPOT: {
-        const updatedSpotDetails = { ...state.spotDetails, ...action.payload };
-        return { ...state, spotDetails: updatedSpotDetails };
-      }
-      case DELETE_SPOT: {
-        const updatedSpots = state.spots.filter((spot) => spot.id !== action.spotId);
-        return { ...state, spots: updatedSpots };
-      }
+    case EDIT_SPOT: {
+      const updatedSpotDetails = { ...state.spotDetails, ...action.payload };
+      return { ...state, spotDetails: updatedSpotDetails };
+    }
+    case DELETE_SPOT: {
+      const updatedSpots = state.spots.filter(
+        (spot) => spot.id !== action.spotId
+      );
+      return { ...state, spots: updatedSpots };
+    }
     case LOAD_SPOTS:
       return { ...state, spots: action.data, error: null };
-      case LOAD_CURRENT :
-        return {...state, spots:action.data}
+    case LOAD_CURRENT:
+      return { ...state, spots: action.data };
     case LOAD_SPOT_DETAILS:
       return { ...state, spotDetails: action.spotDetails };
-      case ADD_IMAGE:
-        return {
-          ...state,
-          spot: {
-            ...state.spot,
-            spotDetails: {
-              ...state.spot.spotDetails,
-              SpotImages: action.data
-            }
-          }
-        };
+    case ADD_IMAGE:
+      return {
+        ...state,
+        spotDetails: {
+          ...state.spot.spotDetails,
+          SpotImages: action.data,
+        },
+      };
     default:
       return state;
   }
