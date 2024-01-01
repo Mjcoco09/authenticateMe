@@ -60,7 +60,7 @@ let userId
     <div>
       <h2 className="text">{spot.name}</h2>
       <div>
-        <img src={spot.previewImage} alt={spot.name} />
+        {spot.spotDetails&&<img src={spot.spotDetails.SpotImages[0]} alt={spot.name} />}
         <br />
         {spot.SpotImages && spot.SpotImages.length > 0 && (
           <div>
@@ -99,7 +99,7 @@ let userId
             <br />
           </>
         ) : (
-          <div className="star-container">
+          <div className="star-container-details">
             <img
               src={starImage}
               alt={`Star ${spot.avgStarRating}`}
@@ -126,7 +126,7 @@ let userId
             <br />
           </>
         ) : (
-          <div className="star-container">
+          <div className="star-container-details">
             <img
               src={starImage}
               alt={`Star ${spot.avgStarRating}`}

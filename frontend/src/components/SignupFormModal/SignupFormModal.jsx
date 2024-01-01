@@ -127,7 +127,7 @@ function SignupFormModal() {
         <br/>
         <p>{errors.confirmPassword}</p>
         </>}
-        <button disabled={errors.email || errors.username || errors.password || errors.firstName || errors.lastName}type="submit" className='signup'>Sign Up</button>
+        <button disabled={errors.email || errors.username || errors.password || errors.firstName || errors.lastName}type="submit" className='signUp'>Sign Up</button>
       </form>
     </>
   );

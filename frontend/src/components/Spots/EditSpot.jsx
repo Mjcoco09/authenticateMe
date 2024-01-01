@@ -21,7 +21,7 @@ const EditSpotForm = () => {
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [prevImg, setPrevImg] = useState("");
+  const [url, setPrevImg] = useState("");
   const [imgOne, setImgOne] = useState("");
   const [imgTwo, setImgTwo] = useState("");
   const [imgThree, setImgThree] = useState("");
@@ -47,7 +47,7 @@ const EditSpotForm = () => {
       setDescription(spotDetails.description || "");
       setName(spotDetails.name || "");
       setPrice(spotDetails.price || "");
-      setPrevImg(spotDetails.prevImg || "");
+      setPrevImg(spotDetails.url || "");
       setImgOne(spotDetails.imgOne || "");
       setImgTwo(spotDetails.imgTwo || "");
       setImgThree(spotDetails.imgThree || "");
@@ -100,8 +100,8 @@ const EditSpotForm = () => {
     if (!price) {
       newErr.price = "Price is required";
     }
-    if (!prevImg) {
-      newErr.prevImg = "Preview image is required";
+    if (!url) {
+      newErr.url = "Preview image is required";
     }
     if (!imgOne) {
         newErr.imgOne = "One image is required";
@@ -110,7 +110,7 @@ const EditSpotForm = () => {
     if (description && description.length < 30) {
       newErr.description = "Description needs a minimum of 30 characters";
     }
-    if (prevImg && !/\.(png|jpg|jpeg)$/.test(prevImg.toLowerCase())) {
+    if (url && !/\.(png|jpg|jpeg)$/.test(url.toLowerCase())) {
       newErr.prevImg = "Image URL must end in .png, .jpg, or .jpeg";
     }
     if (imgOne && !/\.(png|jpg|jpeg)$/.test(imgOne.toLowerCase())) {
@@ -127,7 +127,7 @@ const EditSpotForm = () => {
     state,
     name,
     price,
-    prevImg,
+    url,
     description,
     imgOne,
   ]);
@@ -150,7 +150,7 @@ const EditSpotForm = () => {
     let createdSpot;
     createdSpot = await dispatch(editSpot(spotData,spotId));
     const spotIdImg = createdSpot.id;
-    dispatch(spotImage({ prevImg, spotIdImg }));
+    dispatch(spotImage({ url, spotId:spotIdImg,preview:true }));
     if (createdSpot) {
       navigate(`/spots/${createdSpot.id}`);
     }
@@ -261,7 +261,7 @@ const EditSpotForm = () => {
           <input
             type="text"
             placeholder="Preview Image URL "
-            value={prevImg}
+            value={url}
             onChange={updatePrevImg}
           />
           <br />
@@ -317,7 +317,7 @@ const EditSpotForm = () => {
               error.imgOne
             }
           >
-            Create a new spot
+            Update Spot
           </button>
         </div>
       </form>

@@ -17,8 +17,8 @@ const SpotForm = () => {
   const [state, setState] = useState("");
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(1);
-  const [prevImg, setPrevImg] = useState("");
+  const [price, setPrice] = useState("");
+  const [url, setPrevImg] = useState("");
   const [imgOne, setImgOne] = useState("");
   const [imgTwo, setImgTwo] = useState("");
   const [imgThree, setImgThree] = useState("");
@@ -69,14 +69,14 @@ const SpotForm = () => {
     if (!price) {
       newErr.price = "Price is required";
     }
-    if (!prevImg) {
-      newErr.prevImg = "Preview image is required";
+    if (!url) {
+      newErr.url = "Preview image is required";
     }
 
-    if (description && description.length < 30) {
+    if (description.length < 30) {
       newErr.description = "Description needs a minimum of 30 characters";
     }
-    if (prevImg && !/\.(png|jpg|jpeg)$/.test(prevImg.toLowerCase())) {
+    if (url && !/\.(png|jpg|jpeg)$/.test(url.toLowerCase())) {
       newErr.prevImg = "Image URL must end in .png, .jpg, or .jpeg";
     }
     if (imgOne && !/\.(png|jpg|jpeg)$/.test(imgOne.toLowerCase())) {
@@ -84,11 +84,10 @@ const SpotForm = () => {
       }
 
     setError(newErr);
-  }, [country, address, lat, lng, city, state, name, price, prevImg, description,imgOne]);
+  }, [country, address, lat, lng, city, state, name, price, url, description,imgOne]);
 
 
   const handleSubmit = async (e) => {
-    counter ++
     e.preventDefault();
     const spotData = {
       country,
@@ -105,7 +104,7 @@ const SpotForm = () => {
     let createdSpot;
     createdSpot = await dispatch(createSpot(spotData));
     const spotId = createSpot.id;
-    dispatch(spotImage({ prevImg, spotId }));
+    dispatch(spotImage({url, spotId }));
     if (createdSpot) {
       navigate(`/spots/${createdSpot.id}`);
     }
@@ -187,7 +186,7 @@ const SpotForm = () => {
            { error.description && <p className="error">{error.description}</p>}
           <div className="dividerLine"></div>
           <h2>Create a title for your spot</h2>
-          <h3></h3>
+          <h3>Catch guests' attention with a spot title that highlights what makes your place special</h3>
           <input
             type="text"
             placeholder="Name of your spot"
@@ -206,6 +205,7 @@ const SpotForm = () => {
           <input
             type="number"
             placeholder="Price per night (USD)"
+            min={1}
             value={price}
             onChange={updatePrice}
           />
@@ -217,7 +217,7 @@ const SpotForm = () => {
           <input
             type="text"
             placeholder="Preview Image URL "
-            value={prevImg}
+            value={url}
             onChange={updatePrevImg}
           />
           <br/>
@@ -255,7 +255,7 @@ const SpotForm = () => {
             onChange={updateImgFive}
           />
           <button type="submit" className="submitB" disabled={error.name || error.country || error.address||error.lat ||error.lng ||error.city ||error.state ||error.price ||error.prevImg ||error.description||error.imgOne}>
-            Create a new spot
+            Create spot
           </button>
         </div>
       </form>

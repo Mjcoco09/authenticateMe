@@ -58,17 +58,20 @@ export const removeSpot = (spotId) => async (dispatch) => {
 };
 
 
-export const spotImage = (previewImage,spotId) => async (dispatch) => {
-  const preview = true
+export const spotImage = ({url,spotId,preview}) => async (dispatch) => {
   const res= await csrfFetch(`api/spots/${spotId}/images` , {
     method: "POST",
-    body: JSON.stringify(previewImage,preview)
+    body: JSON.stringify({url,preview})
   })
-
-  const data =await res.json()
-  console.log(data,"$$$$$$$$$$$$$$")
-  dispatch(postImage(data))
-  return data
+  if (res.ok){
+    const data =await res.json()
+    dispatch(postImage(data))
+    console.log("res is ok")
+    console.log(data)
+    return data
+  }else{
+    console.log("nothing happend")
+  }
 }
 
 export const createSpot = (payload) => async (dispatch) => {
@@ -160,8 +163,17 @@ const spotReducer = (state = {}, action) => {
         return {...state, spots:action.data}
     case LOAD_SPOT_DETAILS:
       return { ...state, spotDetails: action.spotDetails };
-    case ADD_IMAGE:
-      return { ...state, images: action.data };
+      case ADD_IMAGE:
+        return {
+          ...state,
+          spot: {
+            ...state.spot,
+            spotDetails: {
+              ...state.spot.spotDetails,
+              SpotImages: action.data
+            }
+          }
+        };
     default:
       return state;
   }

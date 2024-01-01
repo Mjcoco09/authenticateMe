@@ -31,7 +31,7 @@
   margin: 0;
 } */
 
-.signup {
+.signUp {
   width: 100%;
   padding: 10px;
   background-color: #5bc0de;
@@ -40,8 +40,9 @@
   border-radius: 4px;
   cursor: pointer;
 }
-.signup:disabled {
-  background-color: #ddd;
+.signUp:disabled {
+  background-color: #8f8f8f;
+  color: #7f7f7f;
   cursor: not-allowed;
   padding: 10px;
 }

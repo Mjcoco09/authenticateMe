@@ -46,13 +46,23 @@ function PostReviewModal({navigate}) {
           closeModal()
         }
   };
-  
+
   return (
     <form onSubmit={handleSubmit}>
       <h2>How was your stay?</h2>
       <div className="overlay">
         <div className="modal" onClick={(e) => e.stopPropagation()}>
           <h1>Post Your Review</h1>
+          <label>
+              Review:
+              <input
+              placeholder="Leave your Review here"
+                value={review}
+                onChange={updateText}
+              />
+              {/* <br/>
+              {error.review && <p>{error.review}</p>} */}
+            </label>
             <label>
               Stars:
               <input
@@ -63,15 +73,7 @@ function PostReviewModal({navigate}) {
                 max={5}
               />
             </label>
-            <label>
-              Review:
-              <input
-              placeholder="Leave your Review here"
-                value={review}
-                onChange={updateText}
-              />
-              {error.review && <p>{error.review}</p>}
-            </label>
+
             <button type="submit" className="submitButton" disabled= {error.review}>Submit Your Review</button>
         </div>
       </div>

@@ -7,16 +7,31 @@ import "./review.css";
 const ReviewPage = () => {
   const dispatch = useDispatch();
   const { spotId } = useParams();
-
-
+  const spotState = useSelector((state) => state.spot);
+  const spot = spotState.spotDetails;
   const reviewState = useSelector((state) => state.review);
   const reviews = reviewState.reviews && reviewState.reviews.Reviews;
-  console.log(reviews)
+  const sessionState = useSelector((state) => state.session)
+  const currentUser = sessionState.user
+  let userId
+  if(currentUser){
+     userId = currentUser.id
+  }
 
   useEffect(() => {
     dispatch(fetchReviews(spotId));
   }, [dispatch, spotId]);
 
+  let ownerId
+  let isOwner
+  if (spot) {
+    ownerId = spot.ownerId
+    if (ownerId === userId) {
+      isOwner = true
+    } else {
+      isOwner = false
+    }
+  }
 
 
   if (!reviews) {
@@ -28,7 +43,7 @@ const ReviewPage = () => {
 
   return (
     <div className="review-container">
-      {reviews.length === 0 ? (
+      {!isOwner &&reviews.length === 0 ? (
         <p className="review">Be the first to post a review!</p>
       ) : (
         <>

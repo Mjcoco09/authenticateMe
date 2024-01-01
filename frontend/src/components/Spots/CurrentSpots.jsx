@@ -15,6 +15,10 @@ function CurrentSpots() {
 
   const spotState = useSelector((state) => state.spot);
   const spots = spotState.spots;
+  const handleDeleteSpot = (e) => {
+    e.stopPropagation();
+    console.log("Delete button clicked. Event propagation stopped.");
+  };
 
   return (
     <>
@@ -64,10 +68,15 @@ function CurrentSpots() {
                   >
                     Update
                   </button>
+                  <button onClick={handleDeleteSpot} >
                   <OpenModalButton
                   buttonText={"Delete"}
-                    modalComponent={<DeleteSpot navigate={navigate}/>}
+                  modalComponent={<DeleteSpot navigate={navigate}
+                  />
+                }
+
                     />
+                    </button>
                   <br />
 
                   <div className="tooltip">{spot.name}</div>
