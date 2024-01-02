@@ -24,13 +24,14 @@ function PostReviewModal({ navigate }) {
   useEffect(() => {
     const newErr = {};
     if (review.length < 10) {
-      newErr.review = "has to be 10 chars";
+      newErr.review = "Please provide at least 10 letters ";
     }
     setError(newErr);
   }, [review]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
 
     const payload = {
       stars,
@@ -57,8 +58,7 @@ function PostReviewModal({ navigate }) {
               value={review}
               onChange={updateText}
             />
-            {/* <br/>
-              {error.review && <p>{error.review}</p>} */}
+
           </label>
           <label>
             Stars:
@@ -70,7 +70,9 @@ function PostReviewModal({ navigate }) {
               max={5}
             />
           </label>
-
+          <br/>
+              {error.review && <p className="error">{error.review}</p>}
+              <br/>
           <button
             type="submit"
             className="submitButton"
