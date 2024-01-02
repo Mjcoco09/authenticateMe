@@ -44,4 +44,9 @@ form {
     margin: 1px;
 
 }
-
+.submitB:disabled {
+  background-color: #8f8f8f;
+  color: #7f7f7f;
+  cursor: not-allowed;
+  padding: 10px;
+}
