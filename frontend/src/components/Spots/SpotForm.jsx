@@ -18,7 +18,7 @@ const SpotForm = () => {
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [url, setPrevImg] = useState("");
+  const [prevImg, setPrevImg] = useState("");
   const [imgOne, setImgOne] = useState("");
   const [imgTwo, setImgTwo] = useState("");
   const [imgThree, setImgThree] = useState("");
@@ -70,8 +70,8 @@ const SpotForm = () => {
     if (!price) {
       newErr.price = "Price is required";
     }
-    if (!url) {
-      newErr.url = "Preview image is required";
+    if (!prevImg) {
+      newErr.prevImg = "Preview image is required";
     }
 
     if (!imgOne) {
@@ -81,8 +81,8 @@ const SpotForm = () => {
     if (description.length < 30) {
       newErr.description = "Description needs a minimum of 30 characters";
     }
-    if (url && !/\.(png|jpg|jpeg)$/.test(url.toLowerCase())) {
-      newErr.url = "Image URL must end in .png, .jpg, or .jpeg";
+    if (prevImg && !/\.(png|jpg|jpeg)$/.test(prevImg.toLowerCase())) {
+      newErr.prevImg = "Image URL must end in .png, .jpg, or .jpeg";
     }
     if (imgOne && !/\.(png|jpg|jpeg)$/.test(imgOne.toLowerCase())) {
         newErr.imgOne = "Image URL must end in .png, .jpg, or .jpeg";
@@ -90,7 +90,7 @@ const SpotForm = () => {
 
     setError(newErr);
 
-  }, [country, address, lat, lng, city, state, name, price, url, description,imgOne,submitted]);
+  }, [country, address, lat, lng, city, state, name, price, prevImg, description,imgOne,submitted]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -108,28 +108,28 @@ const SpotForm = () => {
     };
     const imageData = {
       preview,
-      url
+      url : prevImg
     }
-    // const imgOneData = {
-    //   preview,
-    //   imgOne
-    // } //
-    // const imgTwoData = {
-    //   preview,
-    //   imgTwo
-    // } //
-    // const imgThreeData = {
-    //   preview,
-    //   imgThree
-    // } //
-    // const imgFourData = {
-    //   preview,
-    //   imgFour
-    // } //
-    // const imgFiveData = {
-    //   preview,
-    //   imgFive
-    // } //
+    const imgOneData = {
+      preview,
+      url:imgOne
+    } //
+    const imgTwoData = {
+      preview,
+      url:imgTwo
+    } //
+    const imgThreeData = {
+      preview,
+      url:imgThree
+    } //
+    const imgFourData = {
+      preview,
+      url: imgFour
+    } //
+    const imgFiveData = {
+      preview,
+      url:imgFive
+    } //
 
     let createdSpot;
     createdSpot = await dispatch(createSpot(spotData));
@@ -140,21 +140,21 @@ const SpotForm = () => {
     if (createdSpot) {
       navigate(`/spots/${createdSpot.id}`);
     }
-    // if(imgOne){
-    //   await dispatch(spotImage(imgOneData, spotId ));
-    // }//
-    // if(imgTwo){
-    //   await dispatch(spotImage(imgTwoData, spotId ));
-    // }//
-    // if(imgThree){
-    //   await dispatch(spotImage(imgThreeData, spotId ));
-    // }//
-    // if(imgFour){
-    //   await dispatch(spotImage(imgFourData, spotId ));
-    // }//
-    // if(imgFive){
-    //   await  dispatch(spotImage(imgFiveData, spotId ));
-    // }//
+    if(imgOne){
+      dispatch(spotImage(imgOneData, spotId ));
+    }//
+    if(imgTwo){
+      dispatch(spotImage(imgTwoData, spotId ));
+    }//
+    if(imgThree){
+      dispatch(spotImage(imgThreeData, spotId ));
+    }//
+    if(imgFour){
+      dispatch(spotImage(imgFourData, spotId ));
+    }//
+    if(imgFive){
+       dispatch(spotImage(imgFiveData, spotId ));
+    }//
 
 
   };
@@ -265,11 +265,11 @@ const SpotForm = () => {
           <input
             type="text"
             placeholder="Preview Image URL "
-            value={url}
+            value={prevImg}
             onChange={updatePrevImg}
           />
           <br/>
-           { error.url && <p className="error">{error.url}</p>}
+           { error.prevImg && <p className="error">{error.prevImg}</p>}
           <input
             type="text"
             placeholder="Image URL "
