@@ -55,19 +55,18 @@ export const removeSpot = (spotId) => async (dispatch) => {
   }
 };
 
-export const spotImage = ({ url, spotId, preview }) =>async (dispatch) => {
+export const spotImage = (payload,spotId) =>async (dispatch) => {
     const res = await csrfFetch(`api/spots/${spotId}/images`, {
       method: "POST",
-      body: JSON.stringify({ url, preview }),
+      body: JSON.stringify(payload),
     });
     if (res.ok) {
       const data = await res.json();
       dispatch(postImage(data));
-      console.log("res is ok");
-      console.log(data);
       return data;
     } else {
-      console.log("nothing happend");
+      const err = await res.json();
+    return err;
     }
   };
 
@@ -78,14 +77,11 @@ export const createSpot = (payload) => async (dispatch) => {
     body: JSON.stringify(payload),
   });
   if (res.ok) {
-    console.log("res is ok");
     const data = await res.json();
     dispatch(addOneSpot(data));
     return data;
   } else {
-    console.log("res isnt ok");
     const err = await res.json();
-    console.log(err);
     return err;
   }
 };
@@ -102,7 +98,6 @@ export const editSpot = (payload, spotId) => async (dispatch) => {
     return data;
   } else {
     const err = await res.json();
-    console.log(err);
     return err;
   }
 };
@@ -113,7 +108,8 @@ export const fetchSpotDetails = (spotId) => async (dispatch) => {
   if (res.ok) {
     dispatch(loadSpotDetails(spotDetails));
   } else {
-    console.log("no bueno");
+    const err = await res.json();
+    return err;
   }
 };
 
@@ -122,9 +118,7 @@ export const fetchCurrentSpot = () => async (dispatch) => {
   if (res.ok) {
     const data = await res.json();
     dispatch(loadCurr(data.Spots));
-    console.log("current available");
   } else {
-    console.log("current not available");
     const err = await res.json;
     return err;
   }
@@ -137,7 +131,8 @@ export const fetchSpots = () => async (dispatch) => {
     const data = await res.json();
     dispatch(loadSpots(data.Spots));
   } else {
-    console.log("noo good #################");
+    const err = await res.json();
+    return err;
   }
 };
 
@@ -165,7 +160,6 @@ const spotReducer = (state = {}, action) => {
       return {
         ...state,
         spotDetails: {
-          ...state.spot.spotDetails,
           SpotImages: action.data,
         },
       };
