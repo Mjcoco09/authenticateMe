@@ -49,9 +49,6 @@ export const fetchReviews = (spotId) => async (dispatch) => {
   }
 };
 
-// const initialState = {
-//   reviews: [],
-// };
 
 const reviewReducer = (state = {}, action) => {
   switch (action.type) {

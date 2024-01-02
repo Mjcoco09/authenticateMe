@@ -60,7 +60,39 @@ let userId
     <div>
       <h2 className="text">{spot.name}</h2>
       <div>
-        {spot.spotDetails&&<img src={spot.spotDetails.SpotImages[0]} alt={spot.name} />}
+      {spot.SpotImages && spot.SpotImages.length > 0 && (
+  <div>
+    <br />
+
+    {spot.SpotImages.slice(0, 1).map((image, index) => (
+      <React.Fragment key={index}>
+        <img
+          src={image.url}
+          alt={`Big Image`}
+          className="big-image"
+        />
+        <br />
+      </React.Fragment>
+    ))}
+
+
+    <div className="small-images-container">
+      {spot.SpotImages.slice(1, 4).map((image, index) => (
+        <React.Fragment key={index}>
+          <img
+            src={image.url}
+            alt={`Small Image ${index + 1}`}
+            className="small-image"
+          />
+        </React.Fragment>
+      ))}
+    </div>
+
+    <br />
+  </div>
+)}
+
+        {/* {spot.spotDetails&&<img src={spot.spotDetails.SpotImages[0]} alt={spot.name} />}
         <br />
         {spot.SpotImages && spot.SpotImages.length > 0 && (
           <div>
@@ -76,7 +108,7 @@ let userId
             ))}
             <br />
           </div>
-        )}
+        )} */}
       </div>
       <div>
         <br />
@@ -91,6 +123,7 @@ let userId
         <p className="text">Description: {spot.description}</p>
       </div>
       <div className="reserveContainer">
+
         <p className="text priceText">${spot.price} per night</p>
         {isNaN(spot.avgStarRating) || spot.avgStarRating === null ? (
           <>
@@ -103,19 +136,22 @@ let userId
             <img
               src={starImage}
               alt={`Star ${spot.avgStarRating}`}
-              className="star-image"
+              className="star-image" 
             />
-            <span className="text">{spot.avgStarRating}</span>
+            <p className="text">{spot.avgStarRating}</p>
+            <br/>
           </div>
         )}
-        <button className="reserveButton" onClick={alertButton}>
-          Reserve
-        </button>
+  {spot.numReviews > 0 &&<span className="dot">·</span>}
         {spot.numReviews > 0 && (
           <p className="text">
-            {spot.numReviews} {spot.numReviews === 1 ? "Review" : "Reviews"}
+            { spot.numReviews} {spot.numReviews === 1 ? "Review" : "Reviews"}
           </p>
         )}
+
+         <button className="reserveButton" onClick={alertButton}>
+          Reserve
+        </button>
       </div>
       <div className="dividerLine"></div>
       <div className="reviewSection">
@@ -132,7 +168,7 @@ let userId
               alt={`Star ${spot.avgStarRating}`}
               className="star-image"
             />
-            <span className="text">{spot.avgStarRating}</span>
+            <p className="text">{spot.avgStarRating}</p>
           </div>
         )}
         {spot.numReviews > 0 && (

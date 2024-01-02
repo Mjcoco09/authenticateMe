@@ -1,4 +1,5 @@
 import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { removeSpot } from "../../store/spot";
 import { useModal } from "../../context/Modal";
@@ -15,6 +16,7 @@ const DeleteSpot = ({navigate}) => {
   };
 
   return (
+
     <div>
 
       {spots &&
@@ -23,12 +25,15 @@ const DeleteSpot = ({navigate}) => {
            <h2>Confirm Delete</h2>
             <h3>Are you sure you want to remove this spot
 from the listings?</h3>
+<div className="button-container">
             <button className="delete" onClick={() => handleDelete(spot.id) }>Yes(Delete Spot)</button>
             <button className="keep" onClick={closeModal}>No(Keep Spot)</button>
+          </div>
           </div>
         ))}
 
     </div>
   );
+
 };
 export default DeleteSpot

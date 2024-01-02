@@ -17,10 +17,25 @@ const ReviewPage = () => {
   if(currentUser){
      userId = currentUser.id
   }
+  const [isFetchingReviews, setIsFetchingReviews] = useState(false); //
+  // useEffect(() => {
+  //   dispatch(fetchReviews(spotId));
+  // }, [dispatch, spotId]);
 
   useEffect(() => {
-    dispatch(fetchReviews(spotId));
-  }, [dispatch, spotId]);
+
+    if (!reviews && !isFetchingReviews) {
+
+      setIsFetchingReviews(true);
+
+
+      dispatch(fetchReviews(spotId)).then(() => {
+
+        setIsFetchingReviews(false);
+      });
+    }
+  }, [dispatch, spotId, reviews, isFetchingReviews]);
+
 
   let ownerId
   let isOwner
@@ -34,12 +49,15 @@ const ReviewPage = () => {
   }
 
 
-  if (!reviews) {
+
+
+  if (!reviews ) {
     return <div>Loading...</div>;
   }
 
 
   const sortedReviews = [...reviews].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
 
   return (
     <div className="review-container">

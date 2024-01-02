@@ -8,7 +8,7 @@ import "./SpotForm.css";
 const SpotForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [submitted, setSubmitted] = useState(false);
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [lat, setLat] = useState("");
@@ -41,10 +41,11 @@ const SpotForm = () => {
   const updateImgThree = (e) => setImgThree(e.target.value);
   const updateImgFour = (e) => setImgFour(e.target.value);
   const updateImgFive = (e) => setImgFive(e.target.value);
-  let counter = 0
+  let preview = true
 
   useEffect(() => {
-    const newErr = {};
+
+      const newErr = {};
     if (!country) {
       newErr.country = "Country is required";
     }
@@ -73,22 +74,27 @@ const SpotForm = () => {
       newErr.url = "Preview image is required";
     }
 
+    if (!imgOne) {
+      newErr.imgOne = "One image is required";
+    }
+
     if (description.length < 30) {
       newErr.description = "Description needs a minimum of 30 characters";
     }
     if (url && !/\.(png|jpg|jpeg)$/.test(url.toLowerCase())) {
-      newErr.prevImg = "Image URL must end in .png, .jpg, or .jpeg";
+      newErr.url = "Image URL must end in .png, .jpg, or .jpeg";
     }
     if (imgOne && !/\.(png|jpg|jpeg)$/.test(imgOne.toLowerCase())) {
         newErr.imgOne = "Image URL must end in .png, .jpg, or .jpeg";
       }
 
     setError(newErr);
-  }, [country, address, lat, lng, city, state, name, price, url, description,imgOne]);
 
+  }, [country, address, lat, lng, city, state, name, price, url, description,imgOne,submitted]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitted(true);
     const spotData = {
       country,
       address,
@@ -100,11 +106,16 @@ const SpotForm = () => {
       lat,
       lng,
     };
+    const imageData = {
+      preview,
+      url
+    }
 
     let createdSpot;
     createdSpot = await dispatch(createSpot(spotData));
-    const spotId = createSpot.id;
-    dispatch(spotImage({url, spotId }));
+    const spotId = createdSpot.id;
+
+    dispatch(spotImage(imageData, spotId ));
     if (createdSpot) {
       navigate(`/spots/${createdSpot.id}`);
     }
@@ -221,7 +232,7 @@ const SpotForm = () => {
             onChange={updatePrevImg}
           />
           <br/>
-           { error.prevImg && <p className="error">{error.prevImg}</p>}
+           { error.url && <p className="error">{error.url}</p>}
           <input
             type="text"
             placeholder="Image URL "
@@ -229,7 +240,7 @@ const SpotForm = () => {
             onChange={updateImgOne}
           />
           <br/>
-           {counter <= 1 && error.imgOne && <p className="error">{error.imgOne}</p>}
+           { error.imgOne && <p className="error">{error.imgOne}</p>}
           <input
             type="text"
             placeholder="Image URL "
