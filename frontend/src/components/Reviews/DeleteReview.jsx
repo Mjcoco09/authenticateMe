@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { removeReview } from '../../store/review';
 import { useModal } from "../../context/Modal";
+import "./DeleteReview.css"
 
 const DeleteReview = ({navigate}) => {
     const { closeModal } = useModal();
@@ -31,9 +32,10 @@ const DeleteReview = ({navigate}) => {
     };
 
     return (
-        <div>
-            <p>Are you sure you want to delete this review?</p>
-            <button onClick={handleDelete}>Yes, Delete Review</button>
+        <div className="deleteReviewForm">
+            <h2>Delete Review</h2>
+            <h3>Are you sure you want to delete this review?</h3>
+            <button className ="red" onClick={handleDelete}>Yes, Delete Review</button>
             <button onClick={closeModal}>No, Cancel</button>
         </div>
     );

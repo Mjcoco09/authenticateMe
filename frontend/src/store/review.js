@@ -49,14 +49,14 @@ export const fetchReviews = (spotId) => async (dispatch) => {
   }
 };
 
-const initialState = {
-  reviews: [], 
-};
+// const initialState = {
+//   reviews: [],
+// };
 
-const reviewReducer = (state = initialState, action) => {
+const reviewReducer = (state = {}, action) => {
   switch (action.type) {
     case DELETE_REVIEW: {
-      const updatedReviews = state.reviews.filter(
+      const updatedReviews = state.reviews.Reviews.filter(
         (review) => review.id !== action.reviewId
       );
       console.log("Updated Reviews:", updatedReviews);
