@@ -50,7 +50,7 @@ export const fetchReviews = (spotId) => async (dispatch) => {
 };
 
 const initialState = {
-  reviews: [], // Initialize reviews as an array
+  reviews: [], 
 };
 
 const reviewReducer = (state = initialState, action) => {
