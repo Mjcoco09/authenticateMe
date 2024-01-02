@@ -117,7 +117,7 @@ let userId
         </p>
         <br />
         <p className="text">
-          Hosted by {spot.Owner.firstName} {spot.Owner.lastName}
+          Hosted by {spot.Owner && spot.Owner.firstName} {spot.Owner && spot.Owner.lastName}
         </p>
         <br />
         <p className="text">Description: {spot.description}</p>
@@ -136,7 +136,7 @@ let userId
             <img
               src={starImage}
               alt={`Star ${spot.avgStarRating}`}
-              className="star-image" 
+              className="star-image"
             />
             <p className="text">{spot.avgStarRating}</p>
             <br/>

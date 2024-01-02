@@ -110,15 +110,52 @@ const SpotForm = () => {
       preview,
       url
     }
+    // const imgOneData = {
+    //   preview,
+    //   imgOne
+    // } //
+    // const imgTwoData = {
+    //   preview,
+    //   imgTwo
+    // } //
+    // const imgThreeData = {
+    //   preview,
+    //   imgThree
+    // } //
+    // const imgFourData = {
+    //   preview,
+    //   imgFour
+    // } //
+    // const imgFiveData = {
+    //   preview,
+    //   imgFive
+    // } //
 
     let createdSpot;
     createdSpot = await dispatch(createSpot(spotData));
     const spotId = createdSpot.id;
+    let createdImage;
 
     dispatch(spotImage(imageData, spotId ));
     if (createdSpot) {
       navigate(`/spots/${createdSpot.id}`);
     }
+    // if(imgOne){
+    //   await dispatch(spotImage(imgOneData, spotId ));
+    // }//
+    // if(imgTwo){
+    //   await dispatch(spotImage(imgTwoData, spotId ));
+    // }//
+    // if(imgThree){
+    //   await dispatch(spotImage(imgThreeData, spotId ));
+    // }//
+    // if(imgFour){
+    //   await dispatch(spotImage(imgFourData, spotId ));
+    // }//
+    // if(imgFive){
+    //   await  dispatch(spotImage(imgFiveData, spotId ));
+    // }//
+
 
   };
 

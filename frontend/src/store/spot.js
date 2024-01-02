@@ -57,13 +57,13 @@ export const removeSpot = (spotId) => async (dispatch) => {
 
 export const spotImage = (payload,spotId) =>async (dispatch) => {
   console.log(payload,"this is payload for image")
-    const res = await csrfFetch(`/spots/${spotId}/images`, {
+    const res = await csrfFetch(`/api/spots/${spotId}/images`, {
       method: "POST",
       body: JSON.stringify(payload),
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(postImage(data));
+      dispatch(postImage(data,"this works$$$$$$$$$$"));
       return data;
     } else {
       const err = await res.json();

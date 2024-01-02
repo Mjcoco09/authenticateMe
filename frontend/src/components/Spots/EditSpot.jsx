@@ -22,11 +22,11 @@ const EditSpotForm = () => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [url, setPrevImg] = useState("");
-  const [imgOne, setImgOne] = useState("");
-  const [imgTwo, setImgTwo] = useState("");
-  const [imgThree, setImgThree] = useState("");
-  const [imgFour, setImgFour] = useState("");
-  const [imgFive, setImgFive] = useState("");
+  // const [imgOne, setImgOne] = useState("");
+  // const [imgTwo, setImgTwo] = useState("");
+  // const [imgThree, setImgThree] = useState("");
+  // const [imgFour, setImgFour] = useState("");
+  // const [imgFive, setImgFive] = useState("");
   const [error, setError] = useState({});
 
   useEffect(() => {
@@ -48,11 +48,11 @@ const EditSpotForm = () => {
       setName(spotDetails.name || "");
       setPrice(spotDetails.price || "");
       setPrevImg(spotDetails.url || "");
-      setImgOne(spotDetails.imgOne || "");
-      setImgTwo(spotDetails.imgTwo || "");
-      setImgThree(spotDetails.imgThree || "");
-      setImgFour(spotDetails.imgFour || "");
-      setImgFive(spotDetails.imgFive || "");
+      // setImgOne(spotDetails.imgOne || "");
+      // setImgTwo(spotDetails.imgTwo || "");
+      // setImgThree(spotDetails.imgThree || "");
+      // setImgFour(spotDetails.imgFour || "");
+      // setImgFive(spotDetails.imgFive || "");
 
     }
   }, [spotDetails]);
@@ -66,13 +66,14 @@ const EditSpotForm = () => {
   const updateDescription = (e) => setDescription(e.target.value);
   const updateName = (e) => setName(e.target.value);
   const updatePrice = (e) => setPrice(e.target.value);
-  const updatePrevImg = (e) => setPrevImg(e.target.value);
-  const updateImgOne = (e) => setImgOne(e.target.value);
-  const updateImgTwo = (e) => setImgTwo(e.target.value);
-  const updateImgThree = (e) => setImgThree(e.target.value);
-  const updateImgFour = (e) => setImgFour(e.target.value);
-  const updateImgFive = (e) => setImgFive(e.target.value);
-  let counter = 0;
+  // const updatePrevImg = (e) => setPrevImg(e.target.value);
+  // const updateImgOne = (e) => setImgOne(e.target.value);
+  // const updateImgTwo = (e) => setImgTwo(e.target.value);
+  // const updateImgThree = (e) => setImgThree(e.target.value);
+  // const updateImgFour = (e) => setImgFour(e.target.value);
+  // const updateImgFive = (e) => setImgFive(e.target.value);
+
+  let preview = true
 
   useEffect(() => {
     const newErr = {};
@@ -100,22 +101,22 @@ const EditSpotForm = () => {
     if (!price) {
       newErr.price = "Price is required";
     }
-    if (!url) {
-      newErr.url = "Preview image is required";
-    }
-    if (!imgOne) {
-        newErr.imgOne = "One image is required";
-      }
+    // if (!url) {
+    //   newErr.url = "Preview image is required";
+    // }
+    // if (!imgOne) {
+    //     newErr.imgOne = "One image is required";
+    //   }
 
     if (description && description.length < 30) {
       newErr.description = "Description needs a minimum of 30 characters";
     }
-    if (url && !/\.(png|jpg|jpeg)$/.test(url.toLowerCase())) {
-      newErr.prevImg = "Image URL must end in .png, .jpg, or .jpeg";
-    }
-    if (imgOne && !/\.(png|jpg|jpeg)$/.test(imgOne.toLowerCase())) {
-      newErr.imgOne = "Image URL must end in .png, .jpg, or .jpeg";
-    }
+    // if (url && !/\.(png|jpg|jpeg)$/.test(url.toLowerCase())) {
+    //   newErr.url = "Image URL must end in .png, .jpg, or .jpeg";
+    // }
+    // if (imgOne && !/\.(png|jpg|jpeg)$/.test(imgOne.toLowerCase())) {
+    //   newErr.imgOne = "Image URL must end in .png, .jpg, or .jpeg";
+    // }
 
     setError(newErr);
   }, [
@@ -129,11 +130,11 @@ const EditSpotForm = () => {
     price,
     url,
     description,
-    imgOne,
+    // imgOne,
   ]);
 
   const handleSubmit = async (e) => {
-    counter++;
+
     e.preventDefault();
     const spotData = {
       country,
@@ -147,13 +148,20 @@ const EditSpotForm = () => {
       lng,
     };
 
+    const imageData = {
+      preview,
+      url
+    }
+
     let createdSpot;
     createdSpot = await dispatch(editSpot(spotData,spotId));
     const spotIdImg = createdSpot.id;
     dispatch(spotImage({ url, spotId:spotIdImg,preview:true }));
+    dispatch(spotImage(imageData, spotId ));
     if (createdSpot) {
       navigate(`/spots/${createdSpot.id}`);
     }
+
   };
 
   return (
@@ -256,15 +264,15 @@ const EditSpotForm = () => {
           <br />
           {error.price && <p className="error">{error.price}</p>}
           <div className="dividerLine"></div>
-          <h2>Liven up your spot with photos</h2>
+          {/* <h2>Liven up your spot with photos</h2>
           <h3>Submit a link to at least one photo to publish your spot.</h3>
           <input
             type="text"
             placeholder="Preview Image URL "
             value={url}
             onChange={updatePrevImg}
-          />
-          <br />
+          /> */}
+          {/* <br />
           {error.prevImg && <p className="error">{error.prevImg}</p>}
           <input
             type="text"
@@ -273,7 +281,7 @@ const EditSpotForm = () => {
             onChange={updateImgOne}
           />
           <br />
-          {counter <= 1 && error.imgOne && (
+          {error.imgOne && (
             <p className="error">{error.imgOne}</p>
           )}
           <input
@@ -299,7 +307,7 @@ const EditSpotForm = () => {
             placeholder="Image URL "
             value={imgFive}
             onChange={updateImgFive}
-          />
+          /> */}
           <button
             type="submit"
             className="submitB"
@@ -312,9 +320,9 @@ const EditSpotForm = () => {
               error.city ||
               error.state ||
               error.price ||
-              error.prevImg ||
-              error.description ||
-              error.imgOne
+              error.description
+              // error.prevImg ||
+              // error.imgOne
             }
           >
             Update Spot
