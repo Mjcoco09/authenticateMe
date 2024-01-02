@@ -50,8 +50,12 @@ function SpotList() {
                 <br/>
                 {isNaN(spot.avgRating) || spot.avgRating === null ? (
                   <>
-                  <p className="new">NEW</p>
-                  <br/>
+                   <div className="rating-container">
+                  <dev className="new">NEW</dev>
+                  <div className="star-container-new">
+              <img src={starImage} alt={`Star ${spot.avgRating}`} className="star-image" />
+                  </div>
+                  </div>
                   </>
             ) : (
               <div className="star-container">

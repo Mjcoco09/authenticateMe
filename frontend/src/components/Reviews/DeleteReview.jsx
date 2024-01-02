@@ -1,4 +1,5 @@
-import React from "react";
+
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { removeReview } from '../../store/review';
@@ -13,8 +14,6 @@ const DeleteReview = ({navigate}) => {
     const reviewState = useSelector((state) => state.review);
     const spotState = useSelector((state) => state.spot)
     const spotId = spotState.spotDetails.id
-    console.log("this is state :",state)
-    console.log("this is reviewState :",reviewState)
     const currentUser = sessionState ? sessionState.user : null;
     const userId = currentUser ? currentUser.id : null;
 
@@ -25,11 +24,15 @@ const DeleteReview = ({navigate}) => {
         if (reviewToDelete) {
             dispatch(removeReview(reviewToDelete.id));
             closeModal();
-            navigate(`/spots/${spotId}`)
+            // navigate(`/spots/${spotId}`)
         } else {
             console.error("Review not found for the current user");
         }
     };
+    useEffect(() => {
+
+        console.log("Review deleted. Refreshing component...");
+    }, [reviewState])
 
     return (
         <div className="deleteReviewForm">

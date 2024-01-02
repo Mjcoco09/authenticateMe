@@ -114,9 +114,8 @@ const SpotForm = () => {
     let createdSpot;
     createdSpot = await dispatch(createSpot(spotData));
     const spotId = createdSpot.id;
-    let createdImage
 
-    createdImage = await dispatch(spotImage(imageData, spotId ));
+    dispatch(spotImage(imageData, spotId ));
     if (createdSpot) {
       navigate(`/spots/${createdSpot.id}`);
     }
