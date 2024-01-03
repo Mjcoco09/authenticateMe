@@ -6,14 +6,14 @@ import { removeReview } from '../../store/review';
 import { useModal } from "../../context/Modal";
 import "./DeleteReview.css"
 
-const DeleteReview = ({navigate}) => {
+const DeleteReview = () => {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
-    const state = useSelector((state) => state);
+    //const state = useSelector((state) => state);
     const sessionState = useSelector((state) => state.session);
     const reviewState = useSelector((state) => state.review);
-    const spotState = useSelector((state) => state.spot)
-    const spotId = spotState.spotDetails.id
+   // const spotState = useSelector((state) => state.spot)
+    //const spotId = spotState.spotDetails.id
     const currentUser = sessionState ? sessionState.user : null;
     const userId = currentUser ? currentUser.id : null;
 

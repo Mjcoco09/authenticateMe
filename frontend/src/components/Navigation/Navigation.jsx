@@ -1,10 +1,8 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
-import SpotForm from "../Spots/SpotForm";
 import "./Navigation.css";
 import logo from "../../../public/favicon.ico";
-
 function Navigation({ isLoaded }) {
   const sessionUser = useSelector((state) => state.session.user);
   const navigate = useNavigate();

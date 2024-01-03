@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
+//import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { removeSpot } from "../../store/spot";
 import { useModal } from "../../context/Modal";

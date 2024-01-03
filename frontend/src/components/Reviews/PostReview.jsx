@@ -4,12 +4,12 @@ import { postReview } from "../../store/review";
 import { useModal } from "../../context/Modal";
 import "./postReview.css";
 
-function PostReviewModal({ navigate }) {
+function PostReviewModal() {
   let createdReview;
   const dispatch = useDispatch();
   const { closeModal } = useModal();
 
-  const sessionState = useSelector((state) => state.session.user);
+  //const sessionState = useSelector((state) => state.session.user);
   const spotState = useSelector((state) => state.spot);
   const spotId = spotState.spotDetails.id;
 

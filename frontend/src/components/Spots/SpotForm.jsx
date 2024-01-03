@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import {useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createSpot } from "../../store/spot";
 import { spotImage } from "../../store/spot";
@@ -134,7 +134,7 @@ const SpotForm = () => {
     let createdSpot;
     createdSpot = await dispatch(createSpot(spotData));
     const spotId = createdSpot.id;
-    let createdImage;
+    //let createdImage;
 
     dispatch(spotImage(imageData, spotId ));
     if (createdSpot) {
@@ -163,7 +163,7 @@ const SpotForm = () => {
     <>
       <h1>Create a new Spot</h1>
       <h2 className="h2">
-        Where's your place located? Guests will only get your exact address once
+        Where&apos;s your place located? Guests will only get your exact address once
         they booked a reservation
       </h2>
       <form onSubmit={handleSubmit}>
@@ -234,7 +234,7 @@ const SpotForm = () => {
            { error.description && <p className="error">{error.description}</p>}
           <div className="dividerLine"></div>
           <h2>Create a title for your spot</h2>
-          <h3>Catch guests' attention with a spot title that highlights what makes your place special</h3>
+          <h3>Catch guest&apos;s attention with a spot title that highlights what makes your place special</h3>
           <input
             type="text"
             placeholder="Name of your spot"

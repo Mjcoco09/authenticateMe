@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { createSpot } from "../../store/spot";
+
 import { spotImage } from "../../store/spot";
 import { fetchSpotDetails,editSpot } from "../../store/spot";
 import "./SpotForm.css";
@@ -168,7 +168,7 @@ const EditSpotForm = () => {
     <>
       <h1>Create a new Spot</h1>
       <h2 className="h2">
-        Where's your place located? Guests will only get your exact address once
+        Where&apos;s your place located? Guests will only get your exact address once
         they booked a reservation
       </h2>
       <form onSubmit={handleSubmit}>
