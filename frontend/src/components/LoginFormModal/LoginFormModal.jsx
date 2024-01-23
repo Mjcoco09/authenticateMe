@@ -21,6 +21,7 @@ function LoginFormModal() {
   };
 
   useEffect(() => {
+
     if(buttonPressed){
     const newErr = {};
 
@@ -83,7 +84,7 @@ function LoginFormModal() {
         </label>
         {errors.credential && <p>{errors.credential}</p>}
         {err.password && <p>{err.password}</p>}
-        <button disabled={err.credential || err.password}  type="submit" className="login">
+        <button disabled={err.credential || err.password || credential.length  < 4  || password.length < 6 }  type="submit" className="login">
           Log In
         </button>
         <button

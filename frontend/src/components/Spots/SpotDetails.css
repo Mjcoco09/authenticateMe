@@ -118,3 +118,8 @@ button {
 .dot {
   margin: 0 5px;
 }
+.star-imageReview {
+  margin-right: 10px;
+  width: 16px;
+  height: 16px;
+}
