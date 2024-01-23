@@ -9,6 +9,7 @@ import ReviewPage from "../Reviews/review";
 import "./SpotDetails.css";
 import DeleteReview from "../Reviews/DeleteReview";
 import OpenModalButton from "../OpenModalButton/OpenModalButton";
+import { fetchReviews } from "../../store/review";
 
 const SpotDetailsPage = () => {
   const navigate = useNavigate();
@@ -21,12 +22,17 @@ const SpotDetailsPage = () => {
   let userHasPostedReview;
   const reviewState = useSelector((state) => state.review);
   const reviewArr = reviewState.reviews && reviewState.reviews.Reviews;
+  let reviewLength;
+  if (reviewArr) {
+    reviewLength = reviewArr.length;
+  }
 
   const dispatch = useDispatch();
   const { spotId } = useParams();
   useEffect(() => {
     dispatch(fetchSpotDetails(spotId));
-  }, [dispatch, spotId, reviewState]);
+    dispatch(fetchReviews(spotId));
+  }, [dispatch, spotId]);
 
   const spotState = useSelector((state) => state.spot);
   const spot = spotState.spotDetails;
@@ -44,6 +50,14 @@ const SpotDetailsPage = () => {
   if (!spot) {
     return <div>Loading...</div>;
   }
+
+  // useEffect(()=> {
+  //  // if (reviewArr) {
+
+  //   //   const userReviewIds = reviewArr.map((review) => review.userId);
+  //   //   userHasPostedReview = userReviewIds.includes(userId);
+  //   // }
+  // },[])
 
   if (reviewArr) {
     const userReviewIds = reviewArr.map((review) => review.userId);
