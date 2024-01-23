@@ -1,6 +1,5 @@
-
 import { useEffect, useState } from "react";
-import {useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { createSpot } from "../../store/spot";
 import { spotImage } from "../../store/spot";
@@ -8,7 +7,7 @@ import "./SpotForm.css";
 const SpotForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [submitted, setSubmitted] = useState(false);
+  // const [submitted, setSubmitted] = useState(false);
   const [country, setCountry] = useState("");
   const [address, setAddress] = useState("");
   const [lat, setLat] = useState("");
@@ -25,6 +24,7 @@ const SpotForm = () => {
   const [imgFour, setImgFour] = useState("");
   const [imgFive, setImgFive] = useState("");
   const [error, setError] = useState({});
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   const updateLat = (e) => setLat(e.target.value);
   const updateLng = (e) => setLng(e.target.value);
@@ -41,11 +41,11 @@ const SpotForm = () => {
   const updateImgThree = (e) => setImgThree(e.target.value);
   const updateImgFour = (e) => setImgFour(e.target.value);
   const updateImgFive = (e) => setImgFive(e.target.value);
-  let preview = true
+  let preview = true;
 
   useEffect(() => {
+    const newErr = {};
 
-      const newErr = {};
     if (!country) {
       newErr.country = "Country is required";
     }
@@ -74,9 +74,9 @@ const SpotForm = () => {
       newErr.prevImg = "Preview image is required";
     }
 
-    if (!imgOne) {
-      newErr.imgOne = "One image is required";
-    }
+    // if (!imgOne) {
+    //   newErr.imgOne = "One image is required";
+    // }
 
     if (description.length < 30) {
       newErr.description = "Description needs a minimum of 30 characters";
@@ -85,86 +85,112 @@ const SpotForm = () => {
       newErr.prevImg = "Image URL must end in .png, .jpg, or .jpeg";
     }
     if (imgOne && !/\.(png|jpg|jpeg)$/.test(imgOne.toLowerCase())) {
-        newErr.imgOne = "Image URL must end in .png, .jpg, or .jpeg";
-      }
+      newErr.imgOne = "Image URL must end in .png, .jpg, or .jpeg";
+    }
 
     setError(newErr);
-
-  }, [country, address, lat, lng, city, state, name, price, prevImg, description,imgOne,submitted]);
+  }, [
+    country,
+    address,
+    lat,
+    lng,
+    city,
+    state,
+    name,
+    price,
+    prevImg,
+    description,
+    imgOne,
+    formSubmitted,
+  ]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    const spotData = {
-      country,
-      address,
-      city,
-      state,
-      description,
-      name,
-      price,
-      lat,
-      lng,
-    };
-    const imageData = {
-      preview,
-      url : prevImg
+    setFormSubmitted(true);
+    if (
+      error.country ||
+      error.address ||
+      error.lat ||
+      error.lng ||
+      error.city ||
+      error.state ||
+      error.name ||
+      error.price ||
+      error.prevImg ||
+      error.description ||
+      error.prevImg
+    ) {
+      return; // Exit the function when there are errors
+    } else {
+      const spotData = {
+        country,
+        address,
+        city,
+        state,
+        description,
+        name,
+        price,
+        lat,
+        lng,
+      };
+      const imageData = {
+        preview,
+        url: prevImg,
+      };
+      const imgOneData = {
+        preview,
+        url: imgOne,
+      }; //
+      const imgTwoData = {
+        preview,
+        url: imgTwo,
+      }; //
+      const imgThreeData = {
+        preview,
+        url: imgThree,
+      }; //
+      const imgFourData = {
+        preview,
+        url: imgFour,
+      }; //
+      const imgFiveData = {
+        preview,
+        url: imgFive,
+      }; //
+
+      let createdSpot;
+      createdSpot = await dispatch(createSpot(spotData));
+      const spotId = createdSpot.id;
+      //let createdImage;
+
+      dispatch(spotImage(imageData, spotId));
+      if (createdSpot) {
+        navigate(`/spots/${createdSpot.id}`);
+      }
+      if (imgOne) {
+        dispatch(spotImage(imgOneData, spotId));
+      } //
+      if (imgTwo) {
+        dispatch(spotImage(imgTwoData, spotId));
+      } //
+      if (imgThree) {
+        dispatch(spotImage(imgThreeData, spotId));
+      } //
+      if (imgFour) {
+        dispatch(spotImage(imgFourData, spotId));
+      } //
+      if (imgFive) {
+        dispatch(spotImage(imgFiveData, spotId));
+      } //
     }
-    const imgOneData = {
-      preview,
-      url:imgOne
-    } //
-    const imgTwoData = {
-      preview,
-      url:imgTwo
-    } //
-    const imgThreeData = {
-      preview,
-      url:imgThree
-    } //
-    const imgFourData = {
-      preview,
-      url: imgFour
-    } //
-    const imgFiveData = {
-      preview,
-      url:imgFive
-    } //
-
-    let createdSpot;
-    createdSpot = await dispatch(createSpot(spotData));
-    const spotId = createdSpot.id;
-    //let createdImage;
-
-    dispatch(spotImage(imageData, spotId ));
-    if (createdSpot) {
-      navigate(`/spots/${createdSpot.id}`);
-    }
-    if(imgOne){
-      dispatch(spotImage(imgOneData, spotId ));
-    }//
-    if(imgTwo){
-      dispatch(spotImage(imgTwoData, spotId ));
-    }//
-    if(imgThree){
-      dispatch(spotImage(imgThreeData, spotId ));
-    }//
-    if(imgFour){
-      dispatch(spotImage(imgFourData, spotId ));
-    }//
-    if(imgFive){
-       dispatch(spotImage(imgFiveData, spotId ));
-    }//
-
-
   };
 
   return (
     <>
       <h1>Create a new Spot</h1>
       <h2 className="h2">
-        Where&apos;s your place located? Guests will only get your exact address once
-        they booked a reservation
+        Where&apos;s your place located? Guests will only get your exact address
+        once they booked a reservation
       </h2>
       <form onSubmit={handleSubmit}>
         <div className="formContainer">
@@ -174,48 +200,54 @@ const SpotForm = () => {
             value={country}
             onChange={updateCountry}
           />
-          <br/>
-           {error.country && <p className="error">{error.country}</p>}
+          <br />
+          {formSubmitted && error.country && (
+            <p className="error">{error.country}</p>
+          )}
           <input
             type="text"
             placeholder="Address"
             value={address}
             onChange={updateAddress}
           />
-          <br/>
-           { error.address && <p className="error">{error.address}</p>}
+          <br />
+          {formSubmitted && error.address && (
+            <p className="error">{error.address}</p>
+          )}
           <input
             type="number"
             placeholder="Latitude"
             value={lat}
             onChange={updateLat}
           />
-          <br/>
-           { error.lat && <p className="error">{error.lat}</p>}
+          <br />
+          {formSubmitted && error.lat && <p className="error">{error.lat}</p>}
           <input
             type="number"
             placeholder="Longitude"
             value={lng}
             onChange={updateLng}
           />
-          <br/>
-           { error.lng && <p className="error">{error.lng}</p>}
+          <br />
+          {formSubmitted && error.lng && <p className="error">{error.lng}</p>}
           <input
             type="text"
             placeholder="City"
             value={city}
             onChange={updateCity}
           />
-          <br/>
-           { error.city && <p className="error">{error.city}</p>}
+          <br />
+          {formSubmitted && error.city && <p className="error">{error.city}</p>}
           <input
             type="text"
             placeholder="State"
             value={state}
             onChange={updateState}
           />
-          <br/>
-           { error.state && <p className="error">{error.state}</p>}
+          <br />
+          {formSubmitted && error.state && (
+            <p className="error">{error.state}</p>
+          )}
           <div className="dividerLine"></div>
           <h2>Describe your place to guests</h2>
           <h3>
@@ -230,19 +262,24 @@ const SpotForm = () => {
             value={description}
             onChange={updateDescription}
           />
-          <br/>
-           { error.description && <p className="error">{error.description}</p>}
+          <br />
+          {formSubmitted && error.description && (
+            <p className="error">{error.description}</p>
+          )}
           <div className="dividerLine"></div>
           <h2>Create a title for your spot</h2>
-          <h3>Catch guest&apos;s attention with a spot title that highlights what makes your place special</h3>
+          <h3>
+            Catch guest&apos;s attention with a spot title that highlights what
+            makes your place special
+          </h3>
           <input
             type="text"
             placeholder="Name of your spot"
             value={name}
             onChange={updateName}
           />
-          <br/>
-           { error.name && <p className="error">{error.name}</p>}
+          <br />
+          {formSubmitted && error.name && <p className="error">{error.name}</p>}
           <div className="dividerLine"></div>
           <h2>Set a base price for your spot</h2>
           <h3>
@@ -257,8 +294,10 @@ const SpotForm = () => {
             value={price}
             onChange={updatePrice}
           />
-          <br/>
-           { error.price && <p className="error">{error.price}</p>}
+          <br />
+          {formSubmitted && error.price && (
+            <p className="error">{error.price}</p>
+          )}
           <div className="dividerLine"></div>
           <h2>Liven up your spot with photos</h2>
           <h3>Submit a link to at least one photo to publish your spot.</h3>
@@ -268,16 +307,20 @@ const SpotForm = () => {
             value={prevImg}
             onChange={updatePrevImg}
           />
-          <br/>
-           { error.prevImg && <p className="error">{error.prevImg}</p>}
+          <br />
+          {formSubmitted && error.prevImg && (
+            <p className="error">{error.prevImg}</p>
+          )}
           <input
             type="text"
             placeholder="Image URL "
             value={imgOne}
             onChange={updateImgOne}
           />
-          <br/>
-           { error.imgOne && <p className="error">{error.imgOne}</p>}
+          <br />
+          {formSubmitted && error.imgOne && (
+            <p className="error">{error.imgOne}</p>
+          )}
           <input
             type="text"
             placeholder="Image URL "
@@ -302,7 +345,23 @@ const SpotForm = () => {
             value={imgFive}
             onChange={updateImgFive}
           />
-          <button type="submit" className="submitB" disabled={error.name || error.country || error.address||error.lat ||error.lng ||error.city ||error.state ||error.price ||error.prevImg ||error.description||error.imgOne}>
+          <button
+            type="submit"
+            className="submitB"
+            // disabled={
+            //   formSubmitted&&
+            //   error.name ||
+            //   error.country ||
+            //   error.address ||
+            //   error.lat ||
+            //   error.lng ||
+            //   error.city ||
+            //   error.state ||
+            //   error.price ||
+            //   error.prevImg ||
+            //   error.description
+            // }
+          >
             Create spot
           </button>
         </div>
