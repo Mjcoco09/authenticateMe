@@ -22,18 +22,21 @@ const SpotDetailsPage = () => {
   let userHasPostedReview;
   const reviewState = useSelector((state) => state.review);
   const reviewArr = reviewState.reviews && reviewState.reviews.Reviews;
-  let reviewLength;
-  if (reviewArr) {
-    reviewLength = reviewArr.length;
+  let arrLength
+  if(reviewArr){
+    arrLength = reviewArr.length
   }
+
+
+
 
   const dispatch = useDispatch();
   const { spotId } = useParams();
+
   useEffect(() => {
     dispatch(fetchSpotDetails(spotId));
     dispatch(fetchReviews(spotId));
-  }, [dispatch, spotId]);
-
+  }, [dispatch, spotId,arrLength]);
   const spotState = useSelector((state) => state.spot);
   const spot = spotState.spotDetails;
   let ownerId;
@@ -67,6 +70,8 @@ const SpotDetailsPage = () => {
   const alertButton = () => {
     alert("Feature coming soon");
   };
+
+
 
   return (
     <div>

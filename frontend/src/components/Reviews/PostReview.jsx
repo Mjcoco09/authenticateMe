@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { postReview } from "../../store/review";
 import { useModal } from "../../context/Modal";
+//import { fetchReviews } from "../../store/review";
 import "./postReview.css";
 
 function PostReviewModal() {
@@ -41,6 +42,7 @@ function PostReviewModal() {
 
     createdReview = await dispatch(postReview(payload, spotId));
     if (createdReview) {
+      // dispatch(fetchReviews(spotId));
       closeModal();
     }
   };
@@ -71,7 +73,7 @@ function PostReviewModal() {
             />
           </label>
           <br/>
-              {error.review && <p className="error">{error.review}</p>}
+              {/* {error.review && <p className="error">{error.review}</p>} */}
               <br/>
           <button
             type="submit"
