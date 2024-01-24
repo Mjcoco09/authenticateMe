@@ -94,9 +94,8 @@ button {
 }
 
 .star-container-details{
-  display: inline-flex;
+  display: flex;
   align-items: center;
-
 }
 
 .big-image {
@@ -116,10 +115,37 @@ button {
 }
 
 .dot {
-  margin: 0 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 9px;
 }
 .star-imageReview {
+  justify-content: center;
   margin-right: 10px;
   width: 16px;
   height: 16px;
+}
+.reviewCount {
+  display: flex;
+  align-items: center;
+}
+
+.priceText{
+  display: flex;
+  align-items: center;
+}
+.textPriceText {
+  display: flex;
+  align-items: center;
+  margin-top: 5px;
+  color: black;
+  font-weight: bolder;
+  font-family: cursive;
+}
+.newStar{
+  display: flex;
+  justify-content: flex-end;
+  color: rgb(90, 0, 0);
+  font-size: 14px;
 }

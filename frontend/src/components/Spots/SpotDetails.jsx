@@ -22,13 +22,10 @@ const SpotDetailsPage = () => {
   let userHasPostedReview;
   const reviewState = useSelector((state) => state.review);
   const reviewArr = reviewState.reviews && reviewState.reviews.Reviews;
-  let arrLength
-  if(reviewArr){
-    arrLength = reviewArr.length
+  let arrLength;
+  if (reviewArr) {
+    arrLength = reviewArr.length;
   }
-
-
-
 
   const dispatch = useDispatch();
   const { spotId } = useParams();
@@ -36,7 +33,7 @@ const SpotDetailsPage = () => {
   useEffect(() => {
     dispatch(fetchSpotDetails(spotId));
     dispatch(fetchReviews(spotId));
-  }, [dispatch, spotId,arrLength]);
+  }, [dispatch, spotId, arrLength]);
   const spotState = useSelector((state) => state.spot);
   const spot = spotState.spotDetails;
   let ownerId;
@@ -70,8 +67,6 @@ const SpotDetailsPage = () => {
   const alertButton = () => {
     alert("Feature coming soon");
   };
-
-
 
   return (
     <div>
@@ -136,12 +131,16 @@ const SpotDetailsPage = () => {
         <p className="text">Description: {spot.description}</p>
       </div>
       <div className="reserveContainer">
-        <p className="text priceText">${spot.price} per night</p>
+        <p className="textPriceText">${spot.price} per night  </p>
         {isNaN(spot.avgStarRating) || spot.avgStarRating === null ? (
           <>
-            <br />
-            <p className="new">NEW</p>
-            <br />
+          <img
+              src={starImage}
+              alt={`Star ${spot.avgStarRating}`}
+              className="star-image"
+            />
+            <p className="newStar">NEW</p>
+
           </>
         ) : (
           <div className="star-container-details">
@@ -154,13 +153,14 @@ const SpotDetailsPage = () => {
             <br />
           </div>
         )}
-        {spot.numReviews > 0 && <span className="dot">·</span>}
-        {spot.numReviews > 0 && (
-          <p className="text">
-            {spot.numReviews} {spot.numReviews === 1 ? "Review" : "Reviews"}
-          </p>
-        )}
-
+        <div className="reviewCount">
+          {spot.numReviews > 0 && <span className="dot">·</span>}
+          {spot.numReviews > 0 && (
+            <p className="text">
+              {spot.numReviews} {spot.numReviews === 1 ? "Review" : "Reviews"}
+            </p>
+          )}
+        </div>
         <button className="reserveButton" onClick={alertButton}>
           Reserve
         </button>

@@ -77,7 +77,7 @@ function PostReviewModal() {
               <br/>
           <button
             type="submit"
-            className="submitButton"
+            className="submitButtonReview"
             disabled={error.review}
           >
             Submit Your Review
