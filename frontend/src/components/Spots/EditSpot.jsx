@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch,useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { spotImage } from "../../store/spot";
+// import { spotImage } from "../../store/spot";
 import { fetchSpotDetails,editSpot } from "../../store/spot";
 import "./SpotForm.css";
 
@@ -21,7 +21,7 @@ const EditSpotForm = () => {
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [url, setPrevImg] = useState("");
+  // const [url, setPrevImg] = useState("");
   // const [imgOne, setImgOne] = useState("");
   // const [imgTwo, setImgTwo] = useState("");
   // const [imgThree, setImgThree] = useState("");
@@ -47,7 +47,7 @@ const EditSpotForm = () => {
       setDescription(spotDetails.description || "");
       setName(spotDetails.name || "");
       setPrice(spotDetails.price || "");
-      setPrevImg(spotDetails.url || "");
+      // setPrevImg(spotDetails.url || "");
       // setImgOne(spotDetails.imgOne || "");
       // setImgTwo(spotDetails.imgTwo || "");
       // setImgThree(spotDetails.imgThree || "");
@@ -73,7 +73,7 @@ const EditSpotForm = () => {
   // const updateImgFour = (e) => setImgFour(e.target.value);
   // const updateImgFive = (e) => setImgFive(e.target.value);
 
-  let preview = true
+  // let preview = true
 
   useEffect(() => {
     const newErr = {};
@@ -111,6 +111,9 @@ const EditSpotForm = () => {
     if (description && description.length < 30) {
       newErr.description = "Description needs a minimum of 30 characters";
     }
+    if (description && description.length >= 300) {
+      newErr.description = "Description cannot be 300 characters or more";
+    }
     // if (url && !/\.(png|jpg|jpeg)$/.test(url.toLowerCase())) {
     //   newErr.url = "Image URL must end in .png, .jpg, or .jpeg";
     // }
@@ -128,7 +131,7 @@ const EditSpotForm = () => {
     state,
     name,
     price,
-    url,
+    // url,
     description,
     // imgOne,
   ]);
@@ -148,16 +151,16 @@ const EditSpotForm = () => {
       lng,
     };
 
-    const imageData = {
-      preview,
-      url
-    }
+    // const imageData = {
+    //   preview,
+    //   url
+    // }
 
     let createdSpot;
     createdSpot = await dispatch(editSpot(spotData,spotId));
-    const spotIdImg = createdSpot.id;
-    dispatch(spotImage({ url, spotId:spotIdImg,preview:true }));
-    dispatch(spotImage(imageData, spotId ));
+    // const spotIdImg = createdSpot.id;
+    // dispatch(spotImage({ url, spotId:spotIdImg,preview:true }));
+    // dispatch(spotImage(imageData, spotId ));
     if (createdSpot) {
       navigate(`/spots/${createdSpot.id}`);
     }

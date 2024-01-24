@@ -8,7 +8,7 @@ h1 {
 #login-form {
   display: flex;
   flex-direction: column;
-  max-width: 300px;
+  max-width: 500px;
   margin: 0 auto;
   gap: 16px;
 }
@@ -40,4 +40,4 @@ input {
 
 p {
   color: red;
-  margin-top: -35px}
+  }

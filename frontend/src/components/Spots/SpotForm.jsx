@@ -81,6 +81,9 @@ const SpotForm = () => {
     if (description.length < 30) {
       newErr.description = "Description needs a minimum of 30 characters";
     }
+    if (description && description.length >= 300) {
+      newErr.description = "Description cannot be 300 characters or more";
+    }
     if (prevImg && !/\.(png|jpg|jpeg)$/.test(prevImg.toLowerCase())) {
       newErr.prevImg = "Image URL must end in .png, .jpg, or .jpeg";
     }
