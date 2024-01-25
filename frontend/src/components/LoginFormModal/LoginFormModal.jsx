@@ -86,14 +86,14 @@ function LoginFormModal() {
         {errors.credential && <p className="errorSignup">{errors.credential}</p>}
 
         {err.password && <p>{err.password}</p>}
-    
+
         <button disabled={err.credential || err.password || credential.length  < 4  || password.length < 6 }  type="submit" className="login">
           Log In
         </button>
         <button
                 type="button"
                 onClick={handleDemoUser}
-                className="demo-user"
+                className="demo-userButton"
               >
                 Demo User
               </button>

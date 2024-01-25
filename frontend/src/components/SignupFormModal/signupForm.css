@@ -39,6 +39,10 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .signUp:disabled {
   background-color: #8f8f8f;
