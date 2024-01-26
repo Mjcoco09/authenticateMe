@@ -197,60 +197,92 @@ const SpotForm = () => {
       </h2>
       <form onSubmit={handleSubmit}>
         <div className="formContainer">
-          <input
-            type="text"
-            placeholder="Country"
-            value={country}
-            onChange={updateCountry}
-          />
-          <br />
-          {formSubmitted && error.country && (
-            <p className="error">{error.country}</p>
-          )}
-          <input
-            type="text"
-            placeholder="Address"
-            value={address}
-            onChange={updateAddress}
-          />
-          <br />
-          {formSubmitted && error.address && (
-            <p className="error">{error.address}</p>
-          )}
-          <input
-            type="number"
-            placeholder="Latitude"
-            value={lat}
-            onChange={updateLat}
-          />
-          <br />
-          {formSubmitted && error.lat && <p className="error">{error.lat}</p>}
-          <input
-            type="number"
-            placeholder="Longitude"
-            value={lng}
-            onChange={updateLng}
-          />
-          <br />
-          {formSubmitted && error.lng && <p className="error">{error.lng}</p>}
-          <input
-            type="text"
-            placeholder="City"
-            value={city}
-            onChange={updateCity}
-          />
-          <br />
-          {formSubmitted && error.city && <p className="error">{error.city}</p>}
-          <input
-            type="text"
-            placeholder="State"
-            value={state}
-            onChange={updateState}
-          />
-          <br />
+          <div className="countryContainer">
+            <div className="countryHeader">
+              <div className="countryLeft">Country</div>
+              {formSubmitted && error.country && (
+                <div className="errorCountry">{error.country}</div>
+              )}
+            </div>
+            <input
+              type="text"
+              placeholder="Country"
+              value={country}
+              onChange={updateCountry}
+            />
+          </div>
+          <div className="addressContainer">
+            <div className="countryHeader">
+              <div className="addressLeft">Street Address</div>
+              {formSubmitted && error.address && (
+                <div className="errorCountry">{error.address}</div>
+              )}
+            </div>
+            <input
+              type="text"
+              placeholder="Address"
+              value={address}
+              onChange={updateAddress}
+            />
+            <br />
+          </div>
+          <div className="cityComp">
+          <div className="cityContainer">
+          <div className="cityHeader">
+          <div className="cityLeft">City</div>
+          {formSubmitted && error.city && (
+              <div className="errorCity">{error.city}</div>
+              )}
+              </div>
+            <input
+              type="text"
+              placeholder="City"
+              value={city}
+              onChange={updateCity}
+              />
+          </div>
+          <div className="stateContainer">
+          <div className="stateHeader">
+          <div className="stateLeft">State</div>
           {formSubmitted && error.state && (
-            <p className="error">{error.state}</p>
-          )}
+              <div className="errorState">{error.state}</div>
+            )}
+            </div>
+            <input
+              type="text"
+              placeholder="State"
+              value={state}
+              onChange={updateState}
+            />
+            </div>
+          </div>
+          <br />
+          <div className="latComp">
+          <div className="latContainer">
+          <div className="latHeader">
+          <div className="latLeft">Latitude</div>
+          {formSubmitted && error.lat && <div className="errorLat">{error.lat}</div>}
+          </div>
+            <input
+              type="number"
+              placeholder="Latitude"
+              value={lat}
+              onChange={updateLat}
+            />
+         </div>
+         <div className="lngContainer">
+  <div className="lngHeader">
+    <div className="lngLeft">Longitude</div>
+    {formSubmitted && error.lng && <p className="errorLng">{error.lng}</p>}
+    </div>
+            <input
+              type="number"
+              placeholder="Longitude"
+              value={lng}
+              onChange={updateLng}
+            />
+           </div>
+          </div>
           <div className="dividerLine"></div>
           <h2>Describe your place to guests</h2>
           <h3>

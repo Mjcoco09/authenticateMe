@@ -6,7 +6,7 @@
 }
 
 input {
-  margin: 5px;
+
   padding: 20px;
   width: 400px;
 }
@@ -37,16 +37,144 @@ form {
 .desc {
   margin: 5px;
   padding: 20px;
-  height:100px;
+  height: 100px;
   width: 400px;
 }
-.error{
-    margin: 1px;
-
+.error {
+  margin: 1px;
 }
 .submitB:disabled {
   background-color: #8f8f8f;
   color: #7f7f7f;
   cursor: not-allowed;
   padding: 10px;
+}
+
+.latComp {
+  display: flex;
+}
+
+.cityComp {
+  display: flex;
+
+}
+
+.countryContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.countryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align items to the left */
+}
+
+.countryLeft {
+  margin-right: 10px;
+}
+
+.errorCountry {
+  color: red;
+
+}
+
+.addressContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.addressHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start; /* Align items to the left */
+}
+
+.addressLeft {
+  margin-right: 10px;
+}
+
+.CityLeft{
+  display: flex;
+  justify-content: flex-start;
+}
+
+.cityContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.cityHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.cityLeft {
+  margin-right: 10px;
+}
+
+.errorCity {
+  color: red;
+}
+
+.stateContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.stateHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.stateLeft {
+  margin-right: 10px;
+}
+
+.errorState {
+  color: red;
+
+}
+
+.latContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.latHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.latLeft {
+  margin-right: 10px;
+}
+
+.errorLat {
+  color: red;
+
+}
+
+.lngContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.lngHeader {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height:19px;
+}
+
+.lngLeft {
+  margin-right: 10px;
+}
+
+.errorLng {
+  color: red;
+  line-height:19px
 }
