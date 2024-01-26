@@ -87,9 +87,21 @@ const SpotForm = () => {
     if (prevImg && !/\.(png|jpg|jpeg)$/.test(prevImg.toLowerCase())) {
       newErr.prevImg = "Image URL must end in .png, .jpg, or .jpeg";
     }
-    if (imgOne && !/\.(png|jpg|jpeg)$/.test(imgOne.toLowerCase())) {
-      newErr.imgOne = "Image URL must end in .png, .jpg, or .jpeg";
-    }
+    // if (imgOne && !/\.(png|jpg|jpeg)$/.test(imgOne.toLowerCase())) {
+    //   newErr.imgOne = "Image URL must end in .png, .jpg, or .jpeg";
+    // }
+    // if (imgTwo && !/\.(png|jpg|jpeg)$/.test(imgTwo.toLowerCase())) {
+    //   newErr.imgTwo = "Image URL must end in .png, .jpg, or .jpeg";
+    // }
+    // if (imgThree && !/\.(png|jpg|jpeg)$/.test(imgThree.toLowerCase())) {
+    //   newErr.imgThree = "Image URL must end in .png, .jpg, or .jpeg";
+    // }
+    // if (imgFour && !/\.(png|jpg|jpeg)$/.test(imgFour.toLowerCase())) {
+    //   newErr.imgFour = "Image URL must end in .png, .jpg, or .jpeg";
+    // }
+    // if (imgFive && !/\.(png|jpg|jpeg)$/.test(imgFive.toLowerCase())) {
+    //   newErr.imgFive = "Image URL must end in .png, .jpg, or .jpeg";
+    // }
 
     setError(newErr);
   }, [
@@ -103,7 +115,6 @@ const SpotForm = () => {
     price,
     prevImg,
     description,
-    imgOne,
     formSubmitted,
   ]);
 
@@ -190,13 +201,17 @@ const SpotForm = () => {
 
   return (
     <>
-      <h1>Create a new Spot</h1>
-      <h2 className="h2">
-        Where&apos;s your place located? Guests will only get your exact address
-        once they booked a reservation
-      </h2>
+
       <form onSubmit={handleSubmit}>
         <div className="formContainer">
+      <h1 className="h1">Create a new Spot</h1>
+      <h2 className="h2">
+        Where&apos;s your place located?
+      </h2>
+      <h4 className="h4A">
+      Guests will only get your exact address
+        once they booked a reservation
+      </h4>
           <div className="countryContainer">
             <div className="countryHeader">
               <div className="countryLeft">Country</div>
@@ -227,68 +242,74 @@ const SpotForm = () => {
             <br />
           </div>
           <div className="cityComp">
-          <div className="cityContainer">
-          <div className="cityHeader">
-          <div className="cityLeft">City</div>
-          {formSubmitted && error.city && (
-              <div className="errorCity">{error.city}</div>
-              )}
+            <div className="cityContainer">
+              <div className="cityHeader">
+                <div className="cityLeft">City</div>
+                {formSubmitted && error.city && (
+                  <div className="errorCity">{error.city}</div>
+                )}
               </div>
-            <input
-              type="text"
-              placeholder="City"
-              value={city}
-              onChange={updateCity}
+              <input
+                type="text"
+                placeholder="City"
+                value={city}
+                onChange={updateCity}
               />
-          </div>
-          <div className="stateContainer">
-          <div className="stateHeader">
-          <div className="stateLeft">State</div>
-          {formSubmitted && error.state && (
-              <div className="errorState">{error.state}</div>
-            )}
             </div>
-            <input
-              type="text"
-              placeholder="State"
-              value={state}
-              onChange={updateState}
-            />
+            <div className="comma">,</div>
+            <div className="stateContainer">
+              <div className="stateHeader">
+                <div className="stateLeft">State</div>
+                {formSubmitted && error.state && (
+                  <div className="errorState">{error.state}</div>
+                )}
+              </div>
+              <input
+                type="text"
+                placeholder="State"
+                value={state}
+                onChange={updateState}
+              />
             </div>
           </div>
           <br />
           <div className="latComp">
-          <div className="latContainer">
-          <div className="latHeader">
-          <div className="latLeft">Latitude</div>
-          {formSubmitted && error.lat && <div className="errorLat">{error.lat}</div>}
-          </div>
-            <input
-              type="number"
-              placeholder="Latitude"
-              value={lat}
-              onChange={updateLat}
-            />
-         </div>
-         <div className="lngContainer">
-  <div className="lngHeader">
-    <div className="lngLeft">Longitude</div>
-    {formSubmitted && error.lng && <p className="errorLng">{error.lng}</p>}
-    </div>
-            <input
-              type="number"
-              placeholder="Longitude"
-              value={lng}
-              onChange={updateLng}
-            />
-           </div>
+            <div className="latContainer">
+              <div className="latHeader">
+                <div className="latLeft">Latitude</div>
+                {formSubmitted && error.lat && (
+                  <div className="errorLat">{error.lat}</div>
+                )}
+              </div>
+              <input
+                type="number"
+                placeholder="Latitude"
+                value={lat}
+                onChange={updateLat}
+              />
+            </div>
+            <div className="comma">,</div>
+            <div className="lngContainer">
+              <div className="lngHeader">
+                <div className="lngLeft">Longitude</div>
+                {formSubmitted && error.lng && (
+                  <p className="errorLng">{error.lng}</p>
+                )}
+              </div>
+              <input
+                type="number"
+                placeholder="Longitude"
+                value={lng}
+                onChange={updateLng}
+              />
+            </div>
           </div>
           <div className="dividerLine"></div>
-          <h2>Describe your place to guests</h2>
-          <h3>
+          <h2 className="h2D">Describe your place to guests</h2>
+          <h4 className="h4D">
             Mention the best features of your space, any special amentities like
             fast wif or parking, and what you love about the neighborhood.
-          </h3>
+          </h4 >
 
           <input
             className="desc"
@@ -302,80 +323,92 @@ const SpotForm = () => {
             <p className="error">{error.description}</p>
           )}
           <div className="dividerLine"></div>
-          <h2>Create a title for your spot</h2>
-          <h3>
+          <h2 className="h2E">Create a title for your spot</h2>
+          <h4 className="h4E">
             Catch guest&apos;s attention with a spot title that highlights what
             makes your place special
-          </h3>
-          <input
-            type="text"
-            placeholder="Name of your spot"
-            value={name}
-            onChange={updateName}
-          />
-          <br />
-          {formSubmitted && error.name && <p className="error">{error.name}</p>}
+          </h4>
+          <div className="inputWithError">
+            <input
+            className="mainInput"
+              type="text"
+              placeholder="Name of your spot"
+              value={name}
+              onChange={updateName}
+            />
+            {formSubmitted && error.name && (
+              <div className="errorName">{error.name}</div>
+            )}
+          </div>
           <div className="dividerLine"></div>
-          <h2>Set a base price for your spot</h2>
-          <h3>
+          <h2 className="h2F">Set a base price for your spot</h2>
+          <h4 className="h4F">
             Competitive pricing can help your listing stand out and rank higher
             in search results
-          </h3>
-          <br />
-          <input
-            type="number"
-            placeholder="Price per night (USD)"
-            min={1}
-            value={price}
-            onChange={updatePrice}
-          />
-          <br />
-          {formSubmitted && error.price && (
-            <p className="error">{error.price}</p>
-          )}
+          </h4>
+          <div className="inputWithError">
+            $
+            <input
+            className="mainInput"
+              type="number"
+              placeholder="Price per night (USD)"
+              min={1}
+              value={price}
+              onChange={updatePrice}
+            />
+            {formSubmitted && error.price && (
+              <div className="errorPrice">{error.price}</div>
+            )}
+          </div>
           <div className="dividerLine"></div>
-          <h2>Liven up your spot with photos</h2>
-          <h3>Submit a link to at least one photo to publish your spot.</h3>
+          <h2 className="h2G">Liven up your spot with photos</h2>
+          <h4 className="h4G">Submit a link to at least one photo to publish your spot.</h4>
           <input
             type="text"
+            className="mainInput"
             placeholder="Preview Image URL "
             value={prevImg}
             onChange={updatePrevImg}
           />
-          <br />
+
           {formSubmitted && error.prevImg && (
             <p className="error">{error.prevImg}</p>
           )}
           <input
             type="text"
+            className="mainInput"
             placeholder="Image URL "
             value={imgOne}
             onChange={updateImgOne}
           />
-          <br />
+
           {formSubmitted && error.imgOne && (
             <p className="error">{error.imgOne}</p>
           )}
           <input
             type="text"
+            className="mainInput"
             placeholder="Image URL "
             value={imgTwo}
             onChange={updateImgTwo}
           />
           <input
             type="text"
+            className="mainInput"
             placeholder="Image URL "
             value={imgThree}
             onChange={updateImgThree}
           />
           <input
             type="text"
+            className="mainInput"
             placeholder="Image URL "
             value={imgFour}
             onChange={updateImgFour}
           />
           <input
             type="text"
+            className="mainInput"
             placeholder="Image URL "
             value={imgFive}
             onChange={updateImgFive}

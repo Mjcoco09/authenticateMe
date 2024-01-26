@@ -6,17 +6,58 @@
 }
 
 input {
-
   padding: 20px;
-  width: 400px;
 }
 
 form {
   text-align: center;
 }
-
+.h1{
+  margin-right: 140px;
+}
 .h2 {
   text-align: center;
+  margin-right: 100px;
+}
+.h2D {
+  text-align: center;
+  margin-right: 130px;
+}
+.h2G {
+  text-align: center;
+  margin-right: 120px;
+}
+.h2E {
+  text-align: center;
+  margin-right: 170px;
+}
+.h2F {
+  text-align: center;
+  margin-right: 150px;
+}
+.h4A{
+  text-align:center;
+  margin-left: 10px;
+  width: 400px;
+}
+.h4D{
+  text-align:center;
+  margin-left: 90px;
+  width: 550px;
+}
+.h4E{
+  text-align:center;
+  margin-left: 140px;
+  width:auto
+}
+.h4F{
+  text-align:center;
+  margin-left: 120px;
+  width:auto
+}
+.h4G{
+  text-align:center;
+  margin-right: 70px;
 }
 
 .submitB {
@@ -52,16 +93,18 @@ form {
 
 .latComp {
   display: flex;
+  align-items: center;
 }
 
 .cityComp {
   display: flex;
-
+  align-items: center;
 }
 
 .countryContainer {
   display: flex;
   flex-direction: column;
+  width: 400px
 }
 
 .countryHeader {
@@ -82,6 +125,7 @@ form {
 .addressContainer {
   display: flex;
   flex-direction: column;
+  width: 400px;
 }
 
 .addressHeader {
@@ -102,6 +146,7 @@ form {
 .cityContainer {
   display: flex;
   flex-direction: column;
+  width: 250px;
 }
 
 .cityHeader {
@@ -121,6 +166,8 @@ form {
 .stateContainer {
   display: flex;
   flex-direction: column;
+  max-width: 150px;
+
 }
 
 .stateHeader {
@@ -135,12 +182,13 @@ form {
 
 .errorState {
   color: red;
-
+  white-space: nowrap;
 }
 
 .latContainer {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
 .latHeader {
@@ -176,5 +224,42 @@ form {
 
 .errorLng {
   color: red;
-  line-height:19px
+  line-height:19px;
+  white-space: nowrap;
+}
+
+.latContainer{
+  width:200px;
+  margin-left: 20px;
+}
+.lngContainer {
+  width: 210px;
+}
+
+
+
+
+
+.errorName {
+color: red;
+display: flex;
+}
+
+
+.errorPrice{
+  color: red;
+  display: flex;
+  }
+
+
+
+.mainInput{
+width:400px
+}
+
+.latContainer,
+.lngContainer {
+  display: flex;
+  flex-direction: column;
+  margin-right: 15px; /* Add margin between latitude and longitude inputs */
 }
