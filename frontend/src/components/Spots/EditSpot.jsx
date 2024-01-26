@@ -188,7 +188,7 @@ const EditSpotForm = () => {
 
       <form onSubmit={handleSubmit}>
         <div className="formContainer">
-      <h1 className="h1">Create a new Spot</h1>
+      <h1 className="h1">Update your Spot</h1>
       <h2 className="h2">
         Where&apos;s your place located?
       </h2>

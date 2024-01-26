@@ -131,8 +131,7 @@ const SpotForm = () => {
       error.name ||
       error.price ||
       error.prevImg ||
-      error.description ||
-      error.prevImg
+      error.description
     ) {
       return; // Exit the function when there are errors
     } else {
