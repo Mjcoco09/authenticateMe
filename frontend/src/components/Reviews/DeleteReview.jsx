@@ -36,10 +36,12 @@ const DeleteReview = () => {
 
     return (
         <div className="deleteReviewForm">
-            <h2>Delete Review</h2>
+            <h2 className="h2Delete">Confirm Delete</h2>
+            <div className="deleteReviewDiv">
             <h3>Are you sure you want to delete this review?</h3>
-            <button className ="red" onClick={handleDelete}>Yes, Delete Review</button>
-            <button onClick={closeModal}>No, Cancel</button>
+            <button className ="red" onClick={handleDelete}>Yes(Delete Review)</button>
+            <button  className= "grey" onClick={closeModal}>No(Keep Review)</button>
+            </div>
         </div>
     );
 };

@@ -76,7 +76,7 @@ function SpotList() {
             )
             } */}
 </div>
-              <p className="text">${spot.price} a night</p>
+              <p className="text">${spot.price} night</p>
               <br />
               {/* {isNaN(spot.avgRating) || spot.avgRating === null ? (
                   <>

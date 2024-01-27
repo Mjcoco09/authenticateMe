@@ -26,7 +26,7 @@ input {
 
 .login{
   width: auto;
-  width: 400px;
+  width: 350px;
   margin: 0 auto;
   background-color: #5bc0de;
   color: #fff;
@@ -57,4 +57,9 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
+  }
+
+  .loginInput{
+    height: 2px;
+    width:250px ;
   }
