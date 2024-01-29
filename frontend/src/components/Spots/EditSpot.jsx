@@ -108,7 +108,7 @@ const EditSpotForm = () => {
     //     newErr.imgOne = "One image is required";
     //   }
 
-    if (description && description.length < 30) {
+    if (description.length < 30) {
       newErr.description = "Description needs a minimum of 30 characters";
     }
     if (description && description.length >= 300) {
