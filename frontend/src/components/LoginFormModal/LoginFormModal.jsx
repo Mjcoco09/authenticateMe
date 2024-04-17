@@ -25,7 +25,8 @@ function LoginFormModal() {
     if(buttonPressed){
     const newErr = {};
 
-    if (credential.length < 4) {
+    if (credential.length < 4) {  const dispatch = useDispatch();
+
       newErr.credential = "Username or Email must be greater than 4 characters";
     } else {
       newErr.credential = "";
